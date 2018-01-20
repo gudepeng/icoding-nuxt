@@ -39,15 +39,15 @@ export default {
   methods: {
     async logout () {
       // 该请求会删除cookie
-      await this.$store.dispatch('LOGOUT')
-      if (this.$store.state.status.code === 200) {
-        // 退出成功, 跳转
-        this.$router.push('/top')
-        // 清除token
-        this.$store.commit('SET_USER', '')
-      } else {
-        console.log(this.$store.state.status.message)
-      }
+      // await this.$store.dispatch('LOGOUT')
+      // if (this.$store.state.status.code === 200) {
+      //   // 退出成功, 跳转
+      //   this.$router.push('/top')
+      //   // 清除token
+      //   this.$store.commit('SET_USER', '')
+      // } else {
+      //   console.log(this.$store.state.status.message)
+      // }
     },
     goIndex () {
       this.$router.push('/top')

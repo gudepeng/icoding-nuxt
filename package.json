@@ -17,9 +17,11 @@
     "bezier-easing": "^2.0.3",
     "clipboard": "^1.7.1",
     "highlight.js": "^9.12.0",
+    "markdown-it": "^8.4.0",
     "marked": "^0.3.12",
     "nuxt": "^1.0.0",
     "particles.js": "^2.0.0",
+    "top-editor": "^0.0.5",
     "vue-awesome-swiper": "^3.1.0"
   },
   "devDependencies": {
