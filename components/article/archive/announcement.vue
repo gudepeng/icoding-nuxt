@@ -1,10 +1,8 @@
 <template>
   <div class="announcement">
     <div>
-      <span>前端</span>
-      <span>后端</span>
-      <span>手机端</span>
-      <span>人工智能</span>
+      <span>推荐</span>
+      <span v-for="articleType in articleTypes">{{articleType}}</span>
     </div>
   </div>
 </template>
@@ -14,6 +12,7 @@
     name: 'index-announcement',
     data() {
       return {
+        articleTypes: this.$store.state.option.articleType
       }
     },
     props: {
@@ -35,6 +34,7 @@
     position: relative;
     background-color: $module-bg;
     span{
+      cursor: pointer;
       color: #666666;
       font-family: DINRegular, CenturyGothic;
       padding: 1em;

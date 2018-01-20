@@ -43,12 +43,21 @@ export const state = () => {
           likes: 0
         }
       }
+    },
+    articleType: {
+      '1': '前端',
+      '2': '后端',
+      '3': '手机端',
+      '4': '人工智能',
+      '5': '杂谈'
     }
+
   }
 }
 
 export const getters = {
-  mobileLayout: state => state.mobileLayout
+  mobileLayout: state => state.mobileLayout,
+  articleType: state => state.articleType
 }
 
 export const mutations = {

@@ -26,7 +26,7 @@
           </span>
           <span class="iconfont categories">
             <i class="iconfont icon-list"></i>
-            <span>{{item.sortId}}</span>
+            <span>{{formatArticleType(item.sortId)}}</span>
           </span>
         </div>
       </div>
@@ -46,6 +46,9 @@
       }
     },
     methods: {
+      formatArticleType(type) {
+        return this.$store.state.option.articleType[type]
+      },
       toDetail() {
         if (this.mobileLayout) {
           this.$router.push(`/article/${this.item.id}`)
