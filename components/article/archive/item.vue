@@ -3,7 +3,8 @@
     <div class="item-content" :class="{ mobile: mobileLayout }">
       <div class="item-body">
         <h4 class="item-title">
-          <router-link :to="`/article/${item.articleId}`" :title="item.articleTitle">{{ item.articleTitle }}</router-link>
+          <router-link :to="`/article/${item.articleId}`" :title="item.articleTitle">{{ item.articleTitle }}
+          </router-link>
         </h4>
         <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.articleSummary"></p>
         <div class="item-meta">
@@ -26,7 +27,7 @@
           <span class="iconfont categories">
             <i class="iconfont icon-list"></i>
             <span>{{item.sortId}}</span>
-            </span>
+          </span>
         </div>
       </div>
     </div>
@@ -57,6 +58,7 @@
 <style lang="scss">
   @import '~assets/sass/variables';
   @import '~assets/sass/mixins';
+
   .article-list-item {
     margin-bottom: 1em;
     background-color: $module-bg;
@@ -67,7 +69,7 @@
 
     &:hover {
       background-color: $module-hover-bg;
-      box-shadow: 0 1px 3px 0 rgba(0,34,77,.1);
+      box-shadow: 0 1px 3px 0 rgba(0, 34, 77, .1);
     }
 
     > .item-content {
@@ -106,7 +108,7 @@
 
       > .item-body {
         float: left;
-        padding:16px 25px;
+        padding: 16px 25px;
 
         > .item-title {
           font-size: 1.2em;
@@ -191,7 +193,7 @@
         }
       }
 
-       &.mobile {
+      &.mobile {
         height: auto;
 
         > .item-body {
