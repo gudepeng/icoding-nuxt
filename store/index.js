@@ -41,7 +41,7 @@ export const actions = {
     return Promise.all(initAppData)
   },
   // 登录
-  loginicoding({ commit }, comment) {
+  loginicoding({ commit }, comment,aaa) {
     return Service.post('/login/form', comment, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -49,6 +49,7 @@ export const actions = {
     })
       .then(response => {
         console.log(response)
+        aaa()
       }, err => {
         console.log(err)
       })
@@ -262,8 +263,9 @@ export const actions = {
   //     return Promise.reject(err)
   //   })
   // },
-  loadArticleDetail({ commit }, params = {}) {
+   loadArticleDetail({ commit }, params = {}) {
     commit('article/REQUEST_DETAIL')
+    console.log('params='+params.article_id);
     return Service.get(`/article/${ params.article_id }`)
       .then(response => {
         const success = !!response.status && response.data && Object.is(response.data.status, 0)
@@ -291,5 +293,8 @@ export const actions = {
     }, err => {
       commit('project/REQUEST_GUTHUB_REPOSITORIES_FAILURE', err)
     })
+  },
+  saveArticle(){
+
   }
 }

@@ -13,9 +13,9 @@
       <tbody>
       <tr v-for="(item,index) in articles.data.data" :key="index">
         <td>
-          <nuxt-link :to="{name:'article-id', params:{id:item.date}}">{{ item.title }}</nuxt-link>
+          <nuxt-link :to="{name:'article-id', params:{id:item.articleId}}">{{ item.articleTitle }}</nuxt-link>
         </td>
-        <td>{{item.date | formatDate('yyyy-MM-dd')}}</td>
+        <td>{{item.articleTime | formatDate('yyyy-MM-dd')}}</td>
         <td :class="{'draft':item.state === 'draft'}">{{item.state | status}}</td>
         <td>
           <a @click="edit(item)">编辑</a>
@@ -45,7 +45,6 @@
     },
     async mounted () {
       // 后台无需做ssr, 所以在mounted获取数据
-      alert('mounted');
       await this.$store.dispatch('loadArticles', this.page)
     },
     computed: {
@@ -59,12 +58,12 @@
         return  1
       },
       hasMore () {
-        return (this.$store.state.article.list.page.currentPage || 1) < this.$store.state.article.list.page.totalPage
+        return true
       }
     },
     methods: {
       edit (item) {
-        this.$router.push({ name: 'publish-id', params: { id: item.date } })
+        this.$router.push({ name: 'publish-id', params: { id: item.articleId } })
       },
       async del (item) {
         await this.$store.dispatch('DEL_ARTICLE', item.date)

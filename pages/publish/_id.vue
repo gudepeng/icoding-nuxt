@@ -33,12 +33,11 @@
   export default {
     name: 'Publish',
     layout: 'admin',
-    middleware: 'auth',
     fetch ({ redirect, store }) {
-      if (!store.state.token) {
-        redirect('/login')
-      }
-      store.dispatch('TAGS')
+      // if (!store.state.token) {
+      //   redirect('/login')
+      // }
+      // store.dispatch('TAGS')
     },
     data () {
       return {
@@ -58,7 +57,7 @@
       }
     },
 
-    mounted () {
+    async mounted () {
       if (process.browser) {
         this.options = {
           linkify: true,
@@ -73,16 +72,14 @@
           }
         }
       }
-
       // 有id就获取文章内容
       if (this.articleID) {
-        this.$store.dispatch('ARTICLE_DETAIL', this.articleID)
-        let articleDetail = this.$store.state.articleDetail
-        this.title = articleDetail.title
-        this.content = articleDetail.content
-        let tag = articleDetail.tag
-        this.tag = tag.join(',') + ','
-        this.date = articleDetail.date
+        await this.$store.dispatch('loadArticleDetail', {'article_id':this.articleID})
+        let articleDetail = this.$store.state.article.detail.data
+        this.title = articleDetail.articleTitle
+        this.content = articleDetail.articleContent
+        this.tag = articleDetail.articleTag + ","
+        this.date = articleDetail.articleTime
       }
     },
     methods: {
