@@ -40,7 +40,19 @@ export const actions = {
     }
     return Promise.all(initAppData)
   },
-
+  // 登录
+  loginicoding({ commit }, comment) {
+    return Service.post('/login/form', comment, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+      .then(response => {
+        console.log(response)
+      }, err => {
+        console.log(err)
+      })
+  },
   // 获取博主资料
   loadAdminInfo({ commit }) {
     commit('option/REQUEST_ADMIN_INFO')
