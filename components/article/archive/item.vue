@@ -9,7 +9,7 @@
         <div class="item-meta">
           <span class="date">
             <i class="iconfont icon-clock"></i>
-            <span>{{ item.create_at | toYMD }}</span>
+            <span>{{ item.articleTime | toYMD }}</span>
           </span>
           <span class="views">
             <i class="iconfont icon-eye"></i>
@@ -25,11 +25,8 @@
           </span>
           <span class="iconfont categories">
             <i class="iconfont icon-list"></i>
-            <span v-if="!item.category">未分类</span>
-            <router-link :key="index"
-                         :to="`/category/${category.slug}`"
-                         v-for="(category, index) in item.category">{{ category.name }}</router-link>
-          </span>
+            <span>{{item.sortId}}</span>
+            </span>
           <span class="tags" v-show="false">
             <i class="iconfont icon-tag"></i>
             <span v-if="!item.tag">无</span>
