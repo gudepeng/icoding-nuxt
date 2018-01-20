@@ -235,21 +235,33 @@ export const actions = {
       })
   },
   // 获取文章详情
+  // loadArticleDetail({ commit }, params = {}) {
+  //
+  //   commit('article/REQUEST_DETAIL')
+  //   return Service.get(`/article/${ params.article_id }`)
+  //   .then(response => {
+  //     const success = !!response.status && response.data && Object.is(response.data.code, 1)
+  //     if(success) commit('article/GET_DETAIL_SUCCESS', response.data)
+  //     if(!success) commit('article/GET_DETAIL_FAILURE')
+  //     return Promise.resolve(response.data)
+  //   }, err => {
+  //     commit('article/GET_DETAIL_FAILURE', err)
+  //     return Promise.reject(err)
+  //   })
+  // },
   loadArticleDetail({ commit }, params = {}) {
-
     commit('article/REQUEST_DETAIL')
     return Service.get(`/article/${ params.article_id }`)
-    .then(response => {
-      const success = !!response.status && response.data && Object.is(response.data.code, 1)
-      if(success) commit('article/GET_DETAIL_SUCCESS', response.data)
-      if(!success) commit('article/GET_DETAIL_FAILURE')
-      return Promise.resolve(response.data)
-    }, err => {
-      commit('article/GET_DETAIL_FAILURE', err)
-      return Promise.reject(err)
-    })
+      .then(response => {
+        const success = !!response.status && response.data && Object.is(response.data.status, 0)
+        if(success) commit('article/GET_DETAIL_SUCCESS', response.data)
+        if(!success) commit('article/GET_DETAIL_FAILURE')
+        return Promise.resolve(response.data)
+      }, err => {
+        commit('article/GET_DETAIL_FAILURE', err)
+        return Promise.reject(err)
+      })
   },
-
   // 获取开源项目列表
   loadGithubRepositories({ commit, state }) {
     // 如果数据已存在，则直接返回Promise成功，并返回数据

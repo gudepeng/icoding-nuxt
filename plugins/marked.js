@@ -72,7 +72,6 @@ renderer.image = imageParse
 renderer.paragraph = paragraphParse
 
 export default (content, tags, parseHtml = false) => {
-
   // 所有非链接的关键字进行内链处理
   if (tags && tags.length) {
     renderer.text = text => buildTagLink(text, tags)
@@ -87,7 +86,6 @@ export default (content, tags, parseHtml = false) => {
   if (typeof content != 'string') {
     return ''
   }
-
   // 返回解析内容
   return marked(content, { renderer })
 }
