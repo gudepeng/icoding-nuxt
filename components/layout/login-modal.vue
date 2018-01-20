@@ -1,9 +1,9 @@
 <template>
   <transition name="fade">
-    <div class="modal" v-show="data">
+    <div class="modal" v-show="showType">
       <article>
         <header>
-          <i class="fa close" @click="close"></i>
+          <i class="iconfont icon-cross" @click="tagclose"></i>
         </header>
         <div class="section">
           <input type="text" v-model="loginform.username" placeholder="请输入账号"/>
@@ -25,14 +25,11 @@
     name: 'popup-modal',
     components: {},
     props: {
-      data: {
-        type: Object,
-        default: false
-      }
     },
 
     data() {
       return {
+        showType:false,
         loginform: {
           username: null,
           password: null
@@ -52,13 +49,17 @@
 
     },
     methods: {
-      close() {
-        this.data.show = false
+      loginSuccess(){
+          this.tagclose()
+          //this.$emit("loginSuccess")
+      },
+      tagclose() {
+        this.showType = !this.showType
       },
       login(type){
         switch (type) {
           case 'icoding':
-            this.$store.dispatch('loginicoding', this.loginform)
+            this.$store.dispatch('loginicoding', this.loginform,this.loginSuccess())
             break
           case 'qq':
             break
@@ -72,6 +73,9 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+  @import '~assets/sass/variables';
+  @import '~assets/sass/mixins';
+
   .fade-enter-active, .fade-leave-active {
     transition: all .5s ease;
 
@@ -114,10 +118,12 @@
         padding: 15px 10px 15px 20px;
         font-weight: bold;
         color: #333;
-        i.close {
+        & > .iconfont {
+          color: #8590a6;
           display: block;
           width: 24px;
           height: 24px;
+          font-size: 1em;
           float: right;
           &:hover {
             background-color: #e7e7e7;

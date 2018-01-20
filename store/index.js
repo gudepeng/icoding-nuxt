@@ -6,6 +6,7 @@
 
 import Service from '~/plugins/axios'
 import UaParse from '~/utils/ua-parse'
+import qs from 'qs'
 import EventBus from '~/utils/event-bus'
 // global actions
 export const actions = {
@@ -41,14 +42,16 @@ export const actions = {
     return Promise.all(initAppData)
   },
   // 登录
-  loginicoding({ commit }, comment) {
-    return Service.post('/login/form', comment, {
+  loginicoding({ commit }, comment,ifun) {
+    console.log(comment)
+    return Service.post('/login/form', qs.stringify(comment), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     })
       .then(response => {
-        console.log(response)
+        sessionStorage.setItem("userInfo", response);
+        ifun()
       }, err => {
         console.log(err)
       })
