@@ -17,7 +17,7 @@
           <div>
             <span class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
-            <span class="navbar-slogan">登录</span>
+            <span class="navbar-slogan" @click="login">登录</span>
             <span class="navbar-slogan">&</span>
             <span class="navbar-slogan">注册</span>
           </div>
@@ -34,26 +34,37 @@
         <img v-if="preload" src="/images/about-background-star-2.png" alt="background">
       </div>
     </nav>
+    <popup-modal :data="showmodel">1111</popup-modal>
   </header>
 </template>
 
 <script>
-
   import EventBus from '~/utils/event-bus'
   import consoleSlogan from '~/utils/console-slogan'
+  import PopupModal from './popup-modal'
+
   export default {
     name: 'layout-header',
     data() {
       return {
-        preload: false
+        preload: false,
+        showmodel: {
+          show: false,
+          width: 620,
+          confirmBtnText: '终止',
+        }
       }
     },
     mounted() {
 
     },
-
     methods: {
-
+      login() {
+        this.showmodel.show = true
+      }
+    },
+    components: {
+      PopupModal
     }
   }
 </script>
@@ -61,6 +72,7 @@
 <style lang="scss" scoped>
   @import '~assets/sass/mixins';
   @import '~assets/sass/variables';
+
   .header {
 
     .navbar {
@@ -71,7 +83,7 @@
       height: $header-height;
       background-color: $module-bg;
       z-index: 999;
-      box-shadow: 0 1px 3px 0 rgba(0,34,77,.1);
+      box-shadow: 0 1px 3px 0 rgba(0, 34, 77, .1);
 
       .navbar-container {
         height: $header-height;
@@ -96,7 +108,7 @@
             height: 100%;
           }
         }
-        .navbar-menu{
+        .navbar-menu {
           flex: 1;
           align-items: center;
           display: flex;
@@ -107,7 +119,7 @@
             color: $primary;
             font-family: DINRegular, CenturyGothic;
             padding: 1em;
-            &:hover{
+            &:hover {
               color: #000000;
             }
           }
@@ -121,14 +133,12 @@
           .navbar-slogan {
             padding: 0.3em;
             color: $primary;
-            font-family: DINRegular, CenturyGothic;
-            &:hover{
+            &:hover {
               color: #000000;
             }
           }
         }
       }
-
       > .pre-load {
         visibility: hidden;
         width: 0;
