@@ -48,9 +48,11 @@
     },
     computed: {
       canLoadMore() {
-        const { current_page, total_page } = this.article.data.pagination
-        const hasArticles = this.article.data.pagination
-        return hasArticles ? (current_page < total_page) : false
+        // const { current_page, total_page } = this.article.data.pagination
+        console.log(this.article);
+        const  { current_page, total_page }  = this.article.data.page
+        const hasArticles = this.article.data.page
+        return hasArticles ? (0 < this.article.data.page.totalNumber) : false
       }
     }
   }

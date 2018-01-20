@@ -3,9 +3,9 @@
     <div class="item-content" :class="{ mobile: mobileLayout }">
       <div class="item-body">
         <h4 class="item-title">
-          <router-link :to="`/article/${item.id}`" :title="item.title">{{ item.title }}</router-link>
+          <router-link :to="`/article/${item.articleId}`" :title="item.articleTitle">{{ item.articleTitle }}</router-link>
         </h4>
-        <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.description"></p>
+        <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.articleSummary"></p>
         <div class="item-meta">
           <span class="date">
             <i class="iconfont icon-clock"></i>
@@ -13,26 +13,26 @@
           </span>
           <span class="views">
             <i class="iconfont icon-eye"></i>
-            <span>{{ item.meta.views || 0 }}</span>
+            <span>{{ item.articleClick || 0 }}</span>
           </span>
           <span class="comments">
             <i class="iconfont icon-comment"></i>
-            <span>{{ item.meta.comments || 0 }}</span>
+            <span>{{ item.articleComment || 0 }}</span>
           </span>
           <span class="likes">
             <i class="iconfont icon-like"></i>
-            <span>{{ item.meta.likes || 0 }}</span>
+            <span>{{ item.articleLike || 0 }}</span>
           </span>
           <span class="iconfont categories">
             <i class="iconfont icon-list"></i>
-            <span v-if="!item.category.length">未分类</span>
+            <span v-if="!item.category">未分类</span>
             <router-link :key="index"
                          :to="`/category/${category.slug}`"
                          v-for="(category, index) in item.category">{{ category.name }}</router-link>
           </span>
           <span class="tags" v-show="false">
             <i class="iconfont icon-tag"></i>
-            <span v-if="!item.tag.length">无</span>
+            <span v-if="!item.tag">无</span>
             <router-link :key="index"
                          :to="`/tag/${tag.slug}`"
                          v-for="(tag, index) in item.tag">{{ tag.name }}</router-link>

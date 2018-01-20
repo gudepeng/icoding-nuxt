@@ -2,7 +2,8 @@ import Vue from 'vue'
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: 'https://api.surmon.me/'
+  // baseURL: 'https://api.surmon.me/'
+  baseURL:'http://192.168.123.5'
 })
 
 // 拦截器
