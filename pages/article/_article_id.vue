@@ -1,14 +1,14 @@
 <template>
   <div class="article" :class="{ mobile: mobileLayout }">
     <div class="detail">
-      <h2 class="title">{{ article.title || '...' }}</h2>
+      <h2 class="title">{{ article.articleTitle || '...' }}</h2>
       <transition name="module" mode="out-in">
-        <empty-box class="article-empty-box" v-if="!fetching && !article.title">
+        <empty-box class="article-empty-box" v-if="!fetching && !article.articleTitle">
           <slot>No Result Article.</slot>
         </empty-box>
       </transition>
       <transition name="module" mode="out-in">
-        <div class="content" v-html="articleContent" v-if="!fetching && article.content"></div>
+        <div class="content" v-html="articleContent" v-if="!fetching && article.articleContent"></div>
       </transition>
       <transition name="module" mode="out-in">
         <div class="readmore" v-if="canReadMore">
@@ -19,38 +19,40 @@
         </div>
       </transition>
     </div>
-    <share-box class="article-share" v-if="!fetching && article.content"></share-box>
+    <share-box class="article-share" v-if="!fetching && article.articleContent"></share-box>
     <transition name="module" mode="out-in">
-      <div class="metas" v-if="!fetching && article.title">
+      <div class="metas" v-if="!fetching && article.articleTitle">
         <p class="item">
           <span>本文于</span>
           <span>&nbsp;</span>
-          <router-link :title="buildDateTitle(article.create_at)"
-                       :to="buildDateLink(article.create_at)">
-            <span>{{ buildDateTitle(article.create_at) }}</span>
+          <router-link :title="buildDateTitle(article.articleTime)"
+                       :to="buildDateLink(article.articleTime)">
+            <span>{{ buildDateTitle(article.articleTime) }}</span>
           </router-link>
           <span>&nbsp;发布在&nbsp;</span>
-          <router-link :key="index"
-                       :to="`/category/${category.slug}`"
-                       :title="category.description || category.name"
-                       v-for="(category, index) in article.category">
-            <span>{{ category.name }}</span>
-            <span v-if="article.category.length && article.category[index + 1]">、</span>
-          </router-link>
-          <span v-if="!article.category.length">未知</span>
+          <!--<router-link :key="index"-->
+                       <!--:to="`/category/${category.slug}`"-->
+                       <!--:title="category.description || category.name"-->
+                       <!--v-for="(category, index) in article.articleTag.split(',')">-->
+            <!--<span>{{ category.name }}</span>-->
+            <!--<span v-if="article.category&& article.category[index + 1]">、</span>-->
+          <!--</router-link>-->
+          <!--<span v-for="(category, index) in article.articleTag.split(',')">{{ category.name }}</span>-->
+          <span v-if="article.sortId">{{article.sortId}}</span>
+          <span v-if="!article.sortId">未知</span>
           <span>&nbsp;分类下，当前已被围观&nbsp;</span>
-          <span>{{ article.meta.views || 0 }}</span>
+          <span>{{ article.articleClick || 0 }}</span>
           <span>&nbsp;次</span>
         </p>
         <p class="item">
           <span>相关标签：</span>
-          <span v-if="!article.tag.length">无相关标签</span>
+          <span v-if="!article.articleTag">无相关标签</span>
           <router-link :key="index"
                        :to="`/tag/${tag.slug}`"
                        :title="tag.description || tag.name"
-                       v-for="(tag, index) in article.tag">
-            <span>{{ tag.name }}</span>
-            <span v-if="article.tag.length && article.tag[index + 1]">、</span>
+                       v-for="(tag, index) in article.articleTag.split(',')">
+            <span>{{ tag }} </span>
+            <span v-if="article.tag && article.tag[index + 1]">、</span>
           </router-link>
         </p>
         <p class="item">
@@ -71,25 +73,25 @@
         </div>
       </div>
     </transition>
-    <div class="related" v-if="article.related && article.related.length && !mobileLayout">
+    <div class="related" v-if="article.related && article.related && !mobileLayout">
       <div class="article-list swiper" v-swiper:swiper="swiperOption">
         <div class="swiper-wrapper">
           <div class="swiper-slide item" v-for="(article, index) in article.related" :key="index">
-            <router-link :to="`/article/${article.id}`" 
-                         :title="article.title" 
+            <router-link :to="`/article/${article.id}`"
+                         :title="article.title"
                          class="item-box">
-              <img :src="buildThumb(article.thumb)" class="thumb" :alt="article.title">
-              <span class="title">{{ article.title }}</span>
+              <img :src="buildThumb(article.thumb)" class="thumb" :alt="article.articleTitle">
+              <span class="title">{{ article.articleTitle }}</span>
             </router-link>
           </div>
         </div>
       </div>
     </div>
-    <div class="related" v-if="article.related && article.related.length && mobileLayout">
+    <div class="related" v-if="article.related && article.related && mobileLayout">
       <ul class="article-list">
         <li class="item" v-for="(article, index) in article.related.slice(0, 8)" :key="index">
-          <router-link :to="`/article/${article.id}`" 
-                       :title="article.title + '- [ 继续阅读 ]'" 
+          <router-link :to="`/article/${article.id}`"
+                       :title="article.title + '- [ 继续阅读 ]'"
                        class="item-link">
             <span class="title">《{{ article.title }}》- [ 继续阅读 ]</span>
           </router-link>
@@ -121,10 +123,10 @@
     head() {
       const article = this.article
       return {
-        title: article.title || 'No Result Data.',
+        title: article.articleTitle || 'No Result Data.',
         meta: [
-          { hid: 'keywords', 
-            name: 'keywords', 
+          { hid: 'keywords',
+            name: 'keywords',
             content: (article.keywords ? article.keywords.join(',') : article.title) || ''
           },
           { hid: 'description', name: 'description', content: article.description }
@@ -159,7 +161,7 @@
         return this.$store.state.article.detail.data
       },
       articleContent() {
-        let content = this.article.content
+        let content = this.article.articleContent
         if (!content) return ''
         const hasTags = Object.is(this.tags.code, 1) && !!this.tags.data.length
         if (content.length > 13688 && !this.fullContentEd) {
@@ -170,7 +172,7 @@
           let lastCodeIndex = shortContent.lastIndexOf('\n\n```')
           let lastLineIndex = shortContent.lastIndexOf('\n\n**')
           let lastReadindex = Math.max(lastH4Index, lastH3Index, lastCodeIndex, lastLineIndex);
-          // console.log(lastH4Index, lastH3Index, lastCodeIndex, lastLineIndex, 'min', lastReadindex)
+          console.log(lastH4Index, lastH3Index, lastCodeIndex, lastLineIndex, 'min', lastReadindex)
           shortContent = shortContent.substring(0, lastReadindex)
           return marked(shortContent, hasTags ? this.tags.data : false, true)
         } else {
@@ -490,25 +492,25 @@
       }
 
       @keyframes readmorebtn {
-        0% { 
+        0% {
           transform: translate3d(0, 0, 0);
           background-color: $module-hover-bg;
         }
-        25% { 
+        25% {
           transform: translate3d(0, .5rem, 0);
           background-color: $primary;
           color: white;
         }
-        50% { 
+        50% {
           transform: translate3d(0, 0, 0);
           background-color: $module-hover-bg;
         }
-        75% { 
+        75% {
           transform: translate3d(0, .5rem, 0);
           background-color: $primary;
           color: white;
         }
-        100% { 
+        100% {
           transform: translate3d(0, 0, 0);
           background-color: $module-hover-bg;
         }
