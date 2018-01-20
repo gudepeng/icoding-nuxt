@@ -14,12 +14,15 @@
           </div>
         </div>
         <div class="navbar-longin">
-          <div>
+          <div v-show="userInfo==null">
             <span class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
             <span class="navbar-slogan" @click="login">登录</span>
             <span class="navbar-slogan">&</span>
             <span class="navbar-slogan">注册</span>
+          </div>
+          <div v-show="userInfo!=null">
+
           </div>
         </div>
       </div>
@@ -34,7 +37,7 @@
         <img v-if="preload" src="/images/about-background-star-2.png" alt="background">
       </div>
     </nav>
-    <popup-modal :data="showmodel">
+    <popup-modal ref="loginmodel" @loginSuccess="insertUserInfo">
     </popup-modal>
   </header>
 </template>
@@ -48,8 +51,8 @@
     name: 'layout-header',
     data() {
       return {
+        userInfo: null,
         preload: false,
-        showmodel: false
       }
     },
     mounted() {
@@ -57,7 +60,10 @@
     },
     methods: {
       login() {
-        this.showmodel = true
+        this.$refs.loginmodel.tagclose()
+      },
+      insertUserInfo() {
+          this.userInfo = sessionStorage.getItem("userInfo");
       }
     },
     components: {

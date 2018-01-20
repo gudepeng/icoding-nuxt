@@ -6,6 +6,7 @@
 
 import Service from '~/plugins/axios'
 import UaParse from '~/utils/ua-parse'
+import qs from 'qs'
 import EventBus from '~/utils/event-bus'
 // global actions
 export const actions = {
@@ -41,15 +42,16 @@ export const actions = {
     return Promise.all(initAppData)
   },
   // 登录
-  loginicoding({ commit }, comment,aaa) {
-    return Service.post('/login/form', comment, {
+  loginicoding({ commit }, comment,ifun) {
+    console.log(comment)
+    return Service.post('/login/form', qs.stringify(comment), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     })
       .then(response => {
-        console.log(response)
-        aaa()
+        sessionStorage.setItem("userInfo", response);
+        ifun()
       }, err => {
         console.log(err)
       })
@@ -263,9 +265,8 @@ export const actions = {
   //     return Promise.reject(err)
   //   })
   // },
-   loadArticleDetail({ commit }, params = {}) {
+  loadArticleDetail({ commit }, params = {}) {
     commit('article/REQUEST_DETAIL')
-    console.log('params='+params.article_id);
     return Service.get(`/article/${ params.article_id }`)
       .then(response => {
         const success = !!response.status && response.data && Object.is(response.data.status, 0)
@@ -293,8 +294,5 @@ export const actions = {
     }, err => {
       commit('project/REQUEST_GUTHUB_REPOSITORIES_FAILURE', err)
     })
-  },
-  saveArticle(){
-
   }
 }
