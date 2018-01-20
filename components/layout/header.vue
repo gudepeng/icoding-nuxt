@@ -34,25 +34,22 @@
         <img v-if="preload" src="/images/about-background-star-2.png" alt="background">
       </div>
     </nav>
-    <popup-modal :data="showmodel">1111</popup-modal>
+    <popup-modal :data="showmodel">
+    </popup-modal>
   </header>
 </template>
 
 <script>
   import EventBus from '~/utils/event-bus'
   import consoleSlogan from '~/utils/console-slogan'
-  import PopupModal from './popup-modal'
+  import PopupModal from './login-modal'
 
   export default {
     name: 'layout-header',
     data() {
       return {
         preload: false,
-        showmodel: {
-          show: false,
-          width: 620,
-          confirmBtnText: '终止',
-        }
+        showmodel: false
       }
     },
     mounted() {
@@ -60,7 +57,7 @@
     },
     methods: {
       login() {
-        this.showmodel.show = true
+        this.showmodel = true
       }
     },
     components: {
