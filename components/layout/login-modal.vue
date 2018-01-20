@@ -20,6 +20,7 @@
 </template>
 <script type="text/ecmascript-6">
   import Service from '~/plugins/axios'
+  import qs from 'qs'
 
   export default {
     name: 'popup-modal',
@@ -51,7 +52,7 @@
     methods: {
       loginSuccess(){
           this.tagclose()
-          //this.$emit("loginSuccess")
+          this.$emit("loginSuccess")
       },
       tagclose() {
         this.showType = !this.showType
@@ -59,7 +60,18 @@
       login(type){
         switch (type) {
           case 'icoding':
-            this.$store.dispatch('loginicoding', this.loginform,this.loginSuccess())
+            Service.post('/login/form', qs.stringify(this.loginform), {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            })
+              .then(response => {
+                localStorage.setItem("userInfo", response);
+                this.tagclose()
+                this.$emit("loginSuccess")
+              }, err => {
+                console.log(err)
+              })
             break
           case 'qq':
             break

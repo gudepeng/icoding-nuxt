@@ -56,14 +56,14 @@
       }
     },
     mounted() {
-
+      this.userInfo = localStorage.getItem("userInfo");
     },
     methods: {
       login() {
         this.$refs.loginmodel.tagclose()
       },
       insertUserInfo() {
-          this.userInfo = sessionStorage.getItem("userInfo");
+          this.userInfo = localStorage.getItem("userInfo");
       }
     },
     components: {

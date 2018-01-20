@@ -41,21 +41,6 @@ export const actions = {
     }
     return Promise.all(initAppData)
   },
-  // 登录
-  loginicoding({ commit }, comment,ifun) {
-    console.log(comment)
-    return Service.post('/login/form', qs.stringify(comment), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-      .then(response => {
-        sessionStorage.setItem("userInfo", response);
-        ifun()
-      }, err => {
-        console.log(err)
-      })
-  },
   // 获取博主资料
   loadAdminInfo({ commit }) {
     commit('option/REQUEST_ADMIN_INFO')
