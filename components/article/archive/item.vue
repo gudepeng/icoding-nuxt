@@ -39,7 +39,7 @@
     name: 'article-list-item',
     props: {
       item: Object,
-      clicktype: Object
+      clicktype: Number
     },
     computed: {
       mobileLayout() {

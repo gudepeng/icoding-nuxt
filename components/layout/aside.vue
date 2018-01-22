@@ -1,24 +1,5 @@
 <template>
   <aside class="aside">
-    <!--<div class="aside-search">
-      <div class="search-box">
-        <input id="keyword"
-               required
-               list="keywords"
-               type="search"
-               name="search"
-               class="search-input"
-               placeholder="Search..."
-               v-model.trim="keyword"
-               @keyup.enter="toSearch">
-        <button class="search-btn" @click="toSearch">
-          <i class="iconfont icon-search"></i>
-        </button>
-        <router-link to="/sitemap" class="sitemap-btn">
-          <i class="iconfont icon-sitemap"></i>
-        </router-link>
-      </div>
-    </div>-->
     <div class="aside-article">
       <p class="title">
         <i class="iconfont icon-list"></i>
@@ -89,15 +70,11 @@
     name: 'layout-aside',
     data() {
       return {
-        keyword: ''
       }
     },
     components: {
     },
     mounted() {
-      if (Object.is(this.$route.name, 'search-keyword')) {
-        this.keyword = this.$route.params.keyword
-      }
     },
     computed: {
       tag() {
@@ -111,14 +88,6 @@
       }
     },
     methods: {
-      toSearch() {
-        const keyword = this.keyword
-        const paramsKeyword = this.$route.params.keyword
-        const isSearchPage = Object.is(this.$route.name, 'search-keyword')
-        if (keyword && (isSearchPage ? !Object.is(paramsKeyword, keyword) : true)) {
-          this.$router.push({ name: 'search-keyword', params: { keyword }})
-        }
-      },
       setFullColumu() {
         this.$store.commit('option/SET_ERROR_COLUMU', true)
       },

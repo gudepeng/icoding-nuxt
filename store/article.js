@@ -13,8 +13,8 @@ export const state = () => {
     list: {
       fetching: false,
       data: {
-        pagination: {
-          current_page: 0
+        page: {
+          currentPage: 0
         },
         data: []
       }
@@ -32,8 +32,8 @@ export const mutations = {
   CLEAR_LIST(state) {
     state.list.data = {
       result: {
-        pagination: {
-          current_page: 0
+        page: {
+          currentPage: 0
         },
         data: []
       }
@@ -52,7 +52,7 @@ export const mutations = {
   ADD_LIST_SUCCESS(state, action) {
     state.list.fetching = false
     state.list.data.data.push.apply(state.list.data.data, action.result.data)
-    state.list.data.pagination = action.result.pagination
+    state.list.data.page = action.result.page
   },
 
   // Hot

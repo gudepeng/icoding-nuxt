@@ -15,7 +15,8 @@
           <slot>目前暂无文章</slot>
         </empty-box>
         <transition-group name="fade" tag="div" v-else>
-          <list-item v-for="(item, index) in article.data.data" :clicktype="article.data.sortId" :item="item" :key="index"></list-item>
+          <list-item v-for="(item, index) in article.data.data" :clicktype="article.data.sortId" :item="item"
+                     :key="index"></list-item>
         </transition-group>
       </transition>
     </div>
@@ -23,7 +24,8 @@
     <!-- 加载更多 -->
     <div class="article-load">
       <button class="btn-loadmore" @click="$emit('loadmore')" :disabled="article.fetching || !canLoadMore">
-        <span v-if="!article.fetching && canLoadMore">或许有更多</span>
+        <span
+          v-if="!article.fetching && canLoadMore">或许有更多</span>
         <span v-else-if="article.fetching && canLoadMore">加载中</span>
         <span v-else-if="!canLoadMore">这是底线</span>
       </button>
