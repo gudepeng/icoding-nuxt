@@ -15,7 +15,7 @@
           <slot>目前暂无文章</slot>
         </empty-box>
         <transition-group name="fade" tag="div" v-else>
-          <list-item v-for="(item, index) in article.data.data" :item="item" :key="index"></list-item>
+          <list-item v-for="(item, index) in article.data.data" :clicktype="article.data.sortId" :item="item" :key="index"></list-item>
         </transition-group>
       </transition>
     </div>

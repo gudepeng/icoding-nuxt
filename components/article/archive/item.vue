@@ -24,7 +24,7 @@
             <i class="iconfont icon-like"></i>
             <span>{{ item.articleLike || 0 }}</span>
           </span>
-          <span class="iconfont categories">
+          <span v-if="clicktype==null" class="iconfont categories">
             <i class="iconfont icon-list"></i>
             <span>{{formatArticleType(item.sortId)}}</span>
           </span>
@@ -38,7 +38,8 @@
   export default {
     name: 'article-list-item',
     props: {
-      item: Object
+      item: Object,
+      clicktype: Object
     },
     computed: {
       mobileLayout() {
