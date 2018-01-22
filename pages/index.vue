@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <carrousel :article="article"></carrousel>
-    <announcement :announcement="announcement"></announcement>
+    <announcement :announcement="announcement" @clicktype="clickTypeArticle"></announcement>
     <article-list :article="article" @loadmore="loadmoreArticle"></article-list>
   </div>
 </template>
@@ -20,6 +20,11 @@
         store.dispatch('loadAnnouncements')
       ])
     },
+    data() {
+      return {
+        ctype: null
+      }
+    },
     components: {
       Carrousel, announcement, ArticleList
     },
@@ -32,13 +37,18 @@
       },
       nextPageParams() {
         return {
-          page: this.article.data.pagination.current_page + 1
+          currentPage: this.article.data.page.currentPage + 1,
+          sortId: this.ctype
         }
       }
     },
     methods: {
       loadmoreArticle() {
         this.$store.dispatch('loadArticles', this.nextPageParams)
+      },
+      clickTypeArticle(data) {
+        this.ctype = data
+        this.$store.dispatch('loadArticles', {currentPage: 1, sortId: data})
       }
     }
   }

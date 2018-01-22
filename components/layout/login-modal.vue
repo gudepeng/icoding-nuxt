@@ -11,8 +11,8 @@
         </div>
         <footer>
           <button @click="login('icoding')">登录</button>
-          <button @click="login('qq')">QQ登录</button>
-          <button @click="login('github')">github登录</button>
+          <a target="_blank" href="/auth/qq">QQ登录</a>
+          <a target="_blank" href="/auth/github">github登录</a>
         </footer>
       </article>
     </div>
@@ -75,8 +75,10 @@
               })
             break
           case 'qq':
+            window.location.href="127.0.0.1:80/auth/qq"
             break
           case 'github':
+            window.location.href="127.0.0.1:80/auth/github"
             break
         }
       }

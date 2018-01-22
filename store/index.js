@@ -220,8 +220,7 @@ export const actions = {
   //   })
   // },
 
-  loadArticles({ commit }, params = { currentPage: 1 }) {
-    console.log('loadArticles======');
+  loadArticles({ commit }, params = { currentPage: 1, sortId: null}) {
     commit('article/REQUEST_LIST')
     return Service.get('/article', { params })
       .then(response => {

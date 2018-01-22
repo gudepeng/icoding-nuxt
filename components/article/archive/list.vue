@@ -12,7 +12,7 @@
     <div class="article-list">
       <transition name="module" mode="out-in">
         <empty-box class="article-empty-box" v-if="!article.fetching && !article.data.data.length">
-          <slot>No Result Article.</slot>
+          <slot>目前暂无文章</slot>
         </empty-box>
         <transition-group name="fade" tag="div" v-else>
           <list-item v-for="(item, index) in article.data.data" :item="item" :key="index"></list-item>
@@ -48,11 +48,7 @@
     },
     computed: {
       canLoadMore() {
-        // const { current_page, total_page } = this.article.data.pagination
-        console.log(this.article);
-        const  { current_page, total_page }  = this.article.data.page
-        const hasArticles = this.article.data.page
-        return hasArticles ? (0 < this.article.data.page.totalNumber) : false
+        return this.article.data.page.currentPage < this.article.data.page.totalPage
       }
     }
   }
@@ -60,6 +56,7 @@
 
 <style lang="scss" scoped>
   @import '~assets/sass/variables';
+
   .articles {
 
     > .article-list-header {

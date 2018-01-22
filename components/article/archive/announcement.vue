@@ -1,8 +1,8 @@
 <template>
   <div class="announcement">
     <div>
-      <span>推荐</span>
-      <span v-for="articleType in articleTypes">{{articleType}}</span>
+      <span @click="$emit('clicktype',null)">推荐</span>
+      <span v-for="(articleType, key, index) in articleTypes" @click="$emit('clicktype',key)">{{articleType}}</span>
     </div>
   </div>
 </template>
