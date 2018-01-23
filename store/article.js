@@ -8,7 +8,7 @@ export const state = () => {
   return {
     hot: {
       fetching: false,
-      data: { data: [] }
+      data: []
     },
     list: {
       fetching: false,

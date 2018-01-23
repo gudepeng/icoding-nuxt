@@ -18,7 +18,6 @@ export const actions = {
     const { isMobile, isOpera, isIE, isSafari, isEdge, isFF, isBB, isChrome, isMaxthon, isIos } = UaParse(userAgent)
     const mustJpg = (isIos || isFF || isMaxthon || isSafari || isBB || isIE || isEdge)
     store.commit('option/SET_IMG_EXT', mustJpg ? 'jpeg' : 'webp')
-    // console.log(mustJpg ? 'jpeg' : 'webp')
     store.commit('option/SET_MOBILE_LAYOUT', isMobile)
     store.commit('option/SET_USER_AGENT', userAgent)
     const initAppData = [
@@ -98,9 +97,9 @@ export const actions = {
   // 获取最热文章列表
   loadHotArticles({ commit }) {
     commit('article/REQUEST_HOT_LIST')
-    return Service.get('/article', { params: { hot: 1 }})
+    return Service.get('/article/hot')
     .then(response => {
-      const success = !!response.status && response.data && Object.is(response.data.code, 1)
+      const success = !!response.status && response.data && Object.is(response.data.status, 0)
       if(success) commit('article/GET_HOT_LIST_SUCCESS', response.data)
       if(!success) commit('article/GET_HOT_LIST_FAILURE')
     }, err => {

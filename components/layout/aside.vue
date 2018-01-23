@@ -5,16 +5,15 @@
         <i class="iconfont icon-list"></i>
         <span>热门文章</span>
       </p>
-      <empty-box v-if="!article.fetching && !article.data.data.length">
-        <slot>No Result Hot Articles.</slot>
+      <empty-box v-if="!article.fetching && !article.data.length">
+        <slot>暂无热门文章</slot>
       </empty-box>
-      <ul class="aside-article-list" v-else-if="!article.fetching && article.data.data.length">
-        <li class="item" :key="item.id" v-for="item in article.data.data.slice(0, 10)">
+      <ul class="aside-article-list" v-else-if="!article.fetching && article.data.length">
+        <li class="item" :key="item.id" v-for="item in article.data">
           <span class="index"></span>
           <router-link class="title"
-                       :title="`${item.title} - [ ${item.meta.comments} 条评论  |  ${item.meta.likes} 人喜欢 ]`"
                        :to="`/article/${item.id}`">
-            <span>{{ item.title }}</span>
+            <span>{{ item.name }}</span>
           </router-link>
         </li>
       </ul>
