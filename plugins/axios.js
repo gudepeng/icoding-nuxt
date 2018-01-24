@@ -2,8 +2,8 @@ import Vue from 'vue'
 import axios from 'axios'
 
 const service = axios.create({
-  // baseURL: 'http://39.106.214.109:8081'
-  baseURL:'http://127.0.0.1:80'
+  baseURL: 'http://39.106.214.109:8081'
+  // baseURL:'http://127.0.0.1:80'
 })
 
 // 拦截器

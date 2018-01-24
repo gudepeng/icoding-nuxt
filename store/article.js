@@ -22,6 +22,10 @@ export const state = () => {
     detail: {
       fetching: false,
       data: {}
+    },
+    publish: {
+      posting: false,
+      data: {}
     }
   }
 }
@@ -89,5 +93,17 @@ export const mutations = {
     if (Object.is(article.id, action.id)) {
       state.detail.data.meta.likes ++
     }
+  },
+  //保存文章
+  PUBLISH_ARTICLE_FAILURE(state) {
+    state.publish.posting = false
+    state.detail.data = {}
+  },
+  PUBLISH_ARTICLE_SUCCESS(state, action) {
+    state.publish.posting = false
+    state.detail.data = action.result
+  },
+  PUBLISH_ARTICLE(state){
+    state.publish.posting = true
   }
 }
