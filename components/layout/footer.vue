@@ -2,16 +2,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <!-- <span>陕ICP备13004859号</span> -->
-        <!-- <span> - </span> -->
-        <a class="sitemap-btn" href="/sitemap.xml" target="_blank">SITEMAP.XML</a>
-        <span> &nbsp; </span>
-        <span>Powered By </span>
-        <router-link to="/project">爱编码网</router-link>
-        <span>、</span>
-        <router-link to="/project">Nuxt.js</router-link>
-        <span> and solitarily. &nbsp; Designed By </span>
-        <router-link to="/about">爱编码</router-link>
+        <span>© 2017 - 2018  辽ICP备18001164号-1</span>
       </div>
     </div>
   </footer>
