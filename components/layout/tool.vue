@@ -2,32 +2,6 @@
   <div id="tools">
     <div class="container">
       <div class="tools-list">
-        <button class="webrtc"
-                title="webrtc"
-                @click="toggleWebrtc"
-                :disabled="barrageState"
-                :class="{
-                  active: webrtcState,
-                  close: barrageState
-                }">
-          <i class="iconfont icon-webrtc"></i>
-        </button>
-        <button class="barrage"
-                title="barrage"
-                @click="toggleBarrage"
-                :disabled="webrtcState"
-                :class="{
-                  active: barrageState,
-                  close: webrtcState
-                }">
-          <i class="iconfont icon-barrage"></i>
-        </button>
-        <a class="feedback"
-           title="feedback"
-           href="mailto:surmon@foxmail.com"
-           target="_blank">
-          <i class="iconfont icon-feedback"></i>
-        </a>
         <button class="to-top"
                 title="to-top"
                 @click="totop"
@@ -56,18 +30,10 @@
       return {
         topBtnMouseOver: false,
         bottomBtnMouseOver: false,
-        toggleWebrtcFn: null,
-        firstOpenWeRtc: true,
         animationFrameId: null
       }
     },
     computed: {
-      barrageState() {
-        return this.$store.state.option.openBarrage
-      },
-      webrtcState() {
-        return this.$store.state.option.openWebrtc
-      }
     },
     methods: {
       totop() {
@@ -103,27 +69,6 @@
           }
         }
         this.animationFrameId = window.requestAnimationFrame(step)
-      },
-      toggleBarrage() {
-        this.$store.commit('option/UPDATE_BARRAGE_STATE')
-      },
-      toggleWebrtc() {
-        if (this.firstOpenWeRtc && !this.webrtcState) {
-          if (!window.confirm('实验室功能需要 WebRTC、WebGL、Canvas 等技术的支持，可能占用较多 CPU/GPU 资源，甚至死机、起火、爆炸、毁灭，继续？')) {
-            this.$store.commit('option/UPDATE_WEBRTC_STATE', false)
-            window.alert('滚滚滚')
-            return false
-          }
-          this.firstOpenWeRtc = false
-        }
-        if (this.toggleWebrtcFn) {
-          this.toggleWebrtcFn()
-        } else {
-          this.toggleWebrtcFn = underscore.throttle(() => {
-            this.$store.commit('option/UPDATE_WEBRTC_STATE')
-          }, 1666)
-          this.toggleWebrtcFn()
-        }
       }
     }
   }
@@ -135,14 +80,14 @@
     position: fixed;
     z-index: 9;
     width: 100%;
-    bottom: 30rem;
+    bottom: 15rem;
 
     > .container {
       position: relative;
 
       > .tools-list {
         position: absolute;
-        right: -10em;
+        right: -20em;
         width: 3em;
         height: 7em;
 

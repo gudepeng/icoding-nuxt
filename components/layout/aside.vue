@@ -228,7 +228,7 @@
 
           .index {
             counter-increment: hot-article-list;
-            background-color: $module-hover-bg;
+            background-color: hsla(0,0%,77%,.4);
             width: 1.5em;
             height: 1.5em;
             line-height: 1.5em;
