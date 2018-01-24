@@ -17,9 +17,9 @@
           <div v-show="userInfo==null">
             <span class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
-            <span class="navbar-slogan" @click="login">登录</span>
+            <span class="navbar-slogan" @click="login(0)">登录</span>
             <span class="navbar-slogan">&</span>
-            <span class="navbar-slogan">注册</span>
+            <span class="navbar-slogan" @click="login(1)">注册</span>
           </div>
           <div v-show="userInfo!=null">
 
@@ -59,8 +59,8 @@
       this.userInfo = localStorage.getItem("userInfo");
     },
     methods: {
-      login() {
-        this.$refs.loginmodel.tagclose()
+      login(data) {
+        this.$refs.loginmodel.tagclose(data)
       },
       insertUserInfo() {
           this.userInfo = localStorage.getItem("userInfo");

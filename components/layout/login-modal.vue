@@ -3,23 +3,42 @@
     <div class="modal" v-show="showType">
       <article>
         <header>
-          <span>登录</span>
+          <span>{{lrtype==0?'登录':'注册'}}</span>
           <i class="iconfont icon-close" @click="tagclose"></i>
         </header>
         <div class="section">
-          <div>
-            <input type="text" v-model="loginform.username" placeholder="请输入用户名"/>
-          </div>
-          <div>
-            <input type="password" v-model="loginform.password" placeholder="请输入密码"/>
-          </div>
-          <div>
-            <button @click="login('icoding')">登录</button>
-          </div>
-          <div class="tool">
-            <span class="clickable">注册</span>
-            <span class="right clickable">忘记密码</span>
-          </div>
+          <template v-if="lrtype==0">
+            <div>
+              <input type="text" v-model="loginform.username" placeholder="请输入用户名"/>
+            </div>
+            <div>
+              <input type="password" v-model="loginform.password" placeholder="请输入密码"/>
+            </div>
+            <div>
+              <button @click="login">登录</button>
+            </div>
+            <div class="tool">
+              <span class="clickable" @click="lrtype=1">注册</span>
+              <span class="right clickable">忘记密码</span>
+            </div>
+          </template>
+          <template v-else-if="lrtype==1">
+            <div>
+              <input type="text" v-model="registeredform.userName" placeholder="请输入用户名"/>
+            </div>
+            <div>
+              <input type="password" v-model="registeredform.userPwd" placeholder="请输入密码"/>
+            </div>
+            <div>
+              <input type="text" v-model="registeredform.userEmail" placeholder="请输入邮箱"/>
+            </div>
+            <div>
+              <button @click="registered">注册</button>
+            </div>
+            <div class="tool">
+              <span class="clickable" @click="lrtype=0">已有账号登录</span>
+            </div>
+          </template>
           <div>
             <div class="oauth-box">
               <div class="hint">第三方账号登录：</div>
@@ -46,13 +65,18 @@
     name: 'popup-modal',
     components: {},
     props: {},
-
     data() {
       return {
+        lrtype:0,
         showType: false,
         loginform: {
           username: null,
           password: null
+        },
+        registeredform:{
+          userName: null,
+          userPwd: null,
+          userEmail:null
         }
       }
     },
@@ -73,33 +97,43 @@
         this.tagclose()
         this.$emit("loginSuccess")
       },
-      tagclose() {
+      tagclose(data) {
+        this.lrtype=data
         this.showType = !this.showType
       },
-      login(type){
-        switch (type) {
-          case 'icoding':
-            Service.post('/login/form', qs.stringify(this.loginform), {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              },
-              withCredentials: true
-            })
-              .then(response => {
-                localStorage.setItem("userInfo", response);
-                this.tagclose()
-                this.$emit("loginSuccess")
-              }, err => {
-                console.log(err)
-              })
-            break
-          case 'qq':
-            window.location.href = "127.0.0.1:80/auth/qq"
-            break
-          case 'github':
-            window.location.href = "127.0.0.1:80/auth/github"
-            break
-        }
+      login(){
+        this.loginsuccess(qs.stringify(this.loginform))
+      },
+      loginsuccess(form){
+        Service.post('/login/form',form , {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          withCredentials: true
+        })
+          .then(response => {
+            localStorage.setItem("userInfo", response);
+            this.tagclose()
+            this.$emit("loginSuccess")
+          }, err => {
+            console.log(err)
+          })
+      },
+      registered(){
+        Service.put('/user', this.registeredform, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+        })
+          .then(response => {
+              console.log(response)
+            if(response.data.status==0){
+              this.loginsuccess(qs.stringify({username:this.registeredform.userName,password:this.registeredform.userPwd}))
+            }
+          }, err => {
+            console.log(err)
+          })
       }
     }
 
