@@ -1,8 +1,8 @@
 <template>
   <div class="announcement">
     <div>
-      <span @click="$emit('clicktype',null)">推荐</span>
-      <span v-for="(articleType, key, index) in articleTypes" @click="$emit('clicktype',key)">{{articleType}}</span>
+      <span :class="{click:clickT==null}" @click="clickType(null)">推荐</span>
+      <span :class="{click:clickT==key}" v-for="(articleType, key, index) in articleTypes" @click="clickType(key)">{{articleType}}</span>
     </div>
   </div>
 </template>
@@ -12,12 +12,16 @@
     name: 'index-announcement',
     data() {
       return {
+        clickT: null,
         articleTypes: this.$store.state.option.articleType
       }
     },
-    props: {
-    },
+    props: {},
     methods: {
+      clickType(data) {
+        this.clickT = data
+        this.$emit('clicktype', data)
+      }
     }
   }
 </script>
@@ -25,6 +29,7 @@
 <style lang="scss">
   @import '~assets/sass/variables';
   @import '~assets/sass/mixins';
+
   .announcement {
     height: 3.2em;
     line-height: 3.2em;
@@ -33,13 +38,16 @@
     overflow: hidden;
     position: relative;
     background-color: $module-bg;
-    span{
+    span {
       cursor: pointer;
       color: #666666;
       font-family: DINRegular, CenturyGothic;
       padding: 1em;
-      &:hover{
-        color: #000000;
+      &:hover {
+        color: #0088f5;
+      }
+      &.click {
+        color: #0088f5;
       }
     }
   }
