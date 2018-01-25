@@ -103,8 +103,10 @@
           // state: state,
           // date: Number(this.date) || Date.now()
         })
-        alert(this.$store.state.publish.data);
-        this.publishTip = this.$store.state.publish.data
+        if(this.$store.state.article.publish.data ===0){
+          this.publishTip = '发布成功';
+        }
+        // this.publishTip = this.$store.state.publish.data
         //  发布成功
         this.title = ''
         this.content = ''
