@@ -95,6 +95,10 @@
         await this.$store.dispatch('PUBLISH_ARTICLE', {
           articleTitle: this.title,
           articleContent: this.content,
+          articleTag:'111',
+          sortId:'1',
+          articleSummary:'ddddd',
+          articleUp:1
           // tag: this.trim(this.tag),
           // state: state,
           // date: Number(this.date) || Date.now()
