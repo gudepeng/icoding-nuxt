@@ -120,14 +120,9 @@
           })
       },
       registered(){
-        Service.put('/user', this.registeredform, {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          withCredentials: true
-        })
+        Service.put('/user', this.registeredform)
           .then(response => {
-              console.log(response)
+            console.log(response)
             if(response.data.status==0){
               this.loginsuccess(qs.stringify({username:this.registeredform.userName,password:this.registeredform.userPwd}))
             }

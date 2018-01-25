@@ -15,7 +15,7 @@
         </div>
         <div class="navbar-longin">
           <div v-show="userInfo==null">
-            <span class="navbar-slogan">写文章</span>
+            <span @click="$router.push('/publish')" class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
             <span class="navbar-slogan" @click="login(0)">登录</span>
             <span class="navbar-slogan">&</span>
