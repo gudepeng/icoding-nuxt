@@ -37,7 +37,7 @@
 <script>
   export default {
     name: 'Admin',
-    layout: 'admin',
+    layout: 'mycenter',
     fetch ({ redirect, store }) {
       // if (!store.state.token) {
       //   redirect('/login')

@@ -32,7 +32,7 @@
   import TopEditor from 'top-editor/src/lib/TopEditor.vue'
   export default {
     name: 'Publish',
-    layout: 'admin',
+    layout: 'mycenter',
     fetch ({ redirect, store }) {
       // if (!store.state.token) {
       //   redirect('/login')
