@@ -1,21 +1,24 @@
 <template>
   <div class="article">
     <div class="tab">
-      <a href="javascript:;">
+      <a :class="{click:clickT==0}" href="javascript:;" @click="clicktitle(0)">
         <div>我的博客</div>
       </a>
-      <a href="javascript:;">
+      <a :class="{click:clickT==1}" href="javascript:;" @click="clicktitle(1)">
         <div>我的喜欢</div>
       </a>
     </div>
     <div class="article_list">
-      <div v-for="(item,index) in articles.data.data" :key="index">
+      <div v-for="(item,index) in articles.data.data" :key="index" v-show="clickT==0">
         <div class="title">
           <nuxt-link :to="{name:'article-id', params:{id:item.articleId}}">{{ item.articleTitle }}</nuxt-link>
         </div>
         <div class="time">
           {{item.articleTime | toYMD}}
         </div>
+      </div>
+      <div v-show="clickT==1">
+
       </div>
     </div>
     <!-- 加载更多 -->
@@ -32,7 +35,12 @@
   export default {
     name: 'Admin',
     layout: 'mycenter',
-    fetch ({ redirect, store }) {
+    data() {
+      return {
+        clickT: 0,
+      }
+    },
+    fetch ({redirect, store}) {
     },
     async mounted () {
       // 后台无需做ssr, 所以在mounted获取数据
@@ -46,15 +54,18 @@
         return 1
       },
       page () {
-        return  1
+        return 1
       },
       hasMore () {
         return true
       }
     },
     methods: {
+      clicktitle(type) {
+        this.clickT = type
+      },
       edit (item) {
-        this.$router.push({ name: 'publish-id', params: { id: item.articleId } })
+        this.$router.push({name: 'publish-id', params: {id: item.articleId}})
       },
       async del (item) {
         await this.$store.dispatch('DEL_ARTICLE', item.date)
@@ -84,14 +95,14 @@
   .article {
     background: #FFFFFF;
 
-    .tab{
+    .tab {
       height: 4em;
       display: flex;
       align-items: center;
       margin: 0 auto;
       max-width: 960px;
       white-space: nowrap;;
-      & > a{
+      & > a {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -99,23 +110,30 @@
         width: 7.5em;
         height: 100%;
 
-        & > div{
+        & > div {
           font-size: 1em;
           font-weight: 500;
           color: #31445b;
           cursor: pointer;
         }
         & :hover {
-          color:#0088F5;
+          color: #0088F5;
         }
       }
+      & > .click {
+
+        & > div {
+          color: #0088F5;
+        }
+        box-shadow: inset 0 -2px 0 #0088F5;
+      }
     }
-    .article_list{
+    .article_list {
       & > div {
         height: 5em;
-        border-bottom: 1px solid hsla(240,2%,90%,.5);
+        border-bottom: 1px solid hsla(240, 2%, 90%, .5);
         &:hover {
-          background:#f4f5f5;
+          background: #f4f5f5;
         }
         & > .title {
           flex: 1 1 auto;
