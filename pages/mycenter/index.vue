@@ -14,7 +14,7 @@
           <nuxt-link :to="{name:'article-id', params:{id:item.articleId}}">{{ item.articleTitle }}</nuxt-link>
         </div>
         <div class="time">
-          {{item.articleTime | formatDate('yyyy-MM-dd')}}
+          {{item.articleTime | toYMD}}
         </div>
       </div>
     </div>
@@ -105,11 +105,18 @@
           color: #31445b;
           cursor: pointer;
         }
+        & :hover {
+          color:#0088F5;
+        }
       }
     }
     .article_list{
       & > div {
         height: 5em;
+        border-bottom: 1px solid hsla(240,2%,90%,.5);
+        &:hover {
+          background:#f4f5f5;
+        }
         & > .title {
           flex: 1 1 auto;
           min-width: 0;
@@ -121,10 +128,32 @@
           text-overflow: ellipsis;
           float: left;
           height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 2em;
         }
         & > .time {
+          margin-right: 2em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           float: right;
           height: 100%;
+        }
+      }
+    }
+    .article-load {
+
+      > .btn-loadmore {
+        width: 100%;
+        display: block;
+        height: 3em;
+        line-height: 3em;
+        background-color: $module-bg;
+
+        &:hover {
+          background-color: $module-hover-bg;
         }
       }
     }
