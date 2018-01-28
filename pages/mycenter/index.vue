@@ -1,36 +1,30 @@
 <template>
   <div class="article">
-    <table>
-      <thead>
-      <tr>
-        <th>标题</th>
-        <th>日期</th>
-        <th>状态</th>
-        <th>操作</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(item,index) in articles.data.data" :key="index">
-        <td>
+    <div class="tab">
+      <a href="javascript:;">
+        <div>我的博客</div>
+      </a>
+      <a href="javascript:;">
+        <div>我的喜欢</div>
+      </a>
+    </div>
+    <div class="article_list">
+      <div v-for="(item,index) in articles.data.data" :key="index">
+        <div class="title">
           <nuxt-link :to="{name:'article-id', params:{id:item.articleId}}">{{ item.articleTitle }}</nuxt-link>
-        </td>
-        <td>{{item.articleTime | formatDate('yyyy-MM-dd')}}</td>
-        <td :class="{'draft':item.state === 'draft'}">{{item.state | status}}</td>
-        <td>
-          <a @click="edit(item)">编辑</a>
-        </td>
-        <td>
-          <a @click="del(item)">删除</a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="page" v-show="maxPage > 1">
-      <a v-if="page > 1" class="prev" @click="prevPage">《上一页</a>
-      <a v-else class="disabled prev">《上一页</a>
-      <a v-if="hasMore" class="next" @click="nextPage">下一页》</a>
-      <a v-else class="disabled next">下一页》</a>
+        </div>
+        <div class="time">
+          {{item.articleTime | formatDate('yyyy-MM-dd')}}
+        </div>
+      </div>
+    </div>
+    <!-- 加载更多 -->
+    <div class="article-load">
+      <button class="btn-loadmore">
+        <span>或许有更多</span>
+        <span>加载中</span>
+        <span>这是底线</span>
+      </button>
     </div>
   </div>
 </template>
@@ -39,9 +33,6 @@
     name: 'Admin',
     layout: 'mycenter',
     fetch ({ redirect, store }) {
-      // if (!store.state.token) {
-      //   redirect('/login')
-      // }
     },
     async mounted () {
       // 后台无需做ssr, 所以在mounted获取数据
@@ -86,3 +77,56 @@
     }
   }
 </script>
+<style lang="scss">
+  @import '~assets/sass/mixins';
+  @import '~assets/sass/variables';
+
+  .article {
+    background: #FFFFFF;
+
+    .tab{
+      height: 4em;
+      display: flex;
+      align-items: center;
+      margin: 0 auto;
+      max-width: 960px;
+      white-space: nowrap;;
+      & > a{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 7.5em;
+        height: 100%;
+
+        & > div{
+          font-size: 1em;
+          font-weight: 500;
+          color: #31445b;
+          cursor: pointer;
+        }
+      }
+    }
+    .article_list{
+      & > div {
+        height: 5em;
+        & > .title {
+          flex: 1 1 auto;
+          min-width: 0;
+          font-size: 1.333rem;
+          font-weight: 600;
+          color: #2e3135;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          float: left;
+          height: 100%;
+        }
+        & > .time {
+          float: right;
+          height: 100%;
+        }
+      }
+    }
+  }
+</style>

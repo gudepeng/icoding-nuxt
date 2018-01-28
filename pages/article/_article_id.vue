@@ -110,7 +110,6 @@
 <script>
   import Clipboard from 'clipboard'
   import marked from '~/plugins/marked'
-  import ShareBox from '~/components/layout/share'
 
   export default {
     name: 'article-detail',
@@ -154,7 +153,6 @@
       this.clipboard()
     },
     components: {
-      ShareBox
     },
     computed: {
       article() {
