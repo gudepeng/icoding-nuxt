@@ -11,7 +11,7 @@
     <div class="article_list">
       <div v-for="(item,index) in articles.data.data" :key="index" v-show="clickT==0">
         <div class="title">
-          <nuxt-link :to="{name:'article-id', params:{id:item.articleId}}">{{ item.articleTitle }}</nuxt-link>
+          <nuxt-link :to="`/article/${item.articleId}`">{{ item.articleTitle }}</nuxt-link>
         </div>
         <div class="time">
           {{item.articleTime | toYMD}}
