@@ -18,7 +18,7 @@
               <button @click="login">登录</button>
             </div>
             <div class="tool">
-              <span class="clickable" @click="showtype=1">注册</span>
+              <span class="clickable" @click="$store.dispatch('SHOWLONGINTYPE', 1)">注册</span>
               <span class="right clickable">忘记密码</span>
             </div>
           </template>
@@ -36,7 +36,7 @@
               <button @click="registered">注册</button>
             </div>
             <div class="tool">
-              <span class="clickable" @click="showtype=0">已有账号登录</span>
+              <span class="clickable" @click="$store.dispatch('SHOWLONGINTYPE', 0)">已有账号登录</span>
             </div>
           </template>
           <div>
@@ -109,9 +109,10 @@
           }
         })
           .then(response => {
+              debugger
             localStorage.setItem("userInfo", response);
+            this.$emit('loginSuccess')
             this.tagclose()
-            //this.$emit("loginSuccess")
             this.$store.dispatch('CLEARARTICLELIST')
             this.$router.push('/')
           }, err => {

@@ -59,14 +59,19 @@
     },
     methods: {
       likearticle(id) {
+
+        if(localStorage.getItem("userInfo")) {
           let _this = this
-        Service.put('/like/' + id)
-          .then(function (response) {
-            console.log("like:" + response)
-            console.log(_this.$store.state.article.list.data.data[this.keyindex].likeId)
-          }, function (err) {
-            console.log("like:" + err)
-          })
+          Service.put('/like/' + id)
+            .then(function (response) {
+              console.log("like:" + response)
+              console.log(_this.$store.state.article.list.data.data[this.keyindex].likeId)
+            }, function (err) {
+              console.log("like:" + err)
+            })
+        }else {
+          this.$store.dispatch('SHOWLONGINTYPE', 0)
+        }
       },
       unlikearticle(id) {
         Service.delete('/like/' + id)
