@@ -6,9 +6,7 @@
       </div>
       <p class="publish-tip">{{ publishTip }}</p>
       <div class="content">
-        <no-ssr>
-          <top-editor v-model="content" :upload="upload" :options="options"></top-editor>
-        </no-ssr>
+          <top-editor style="margin-top: 4.5em;" v-model="content" :upload="upload" :options="options"></top-editor>
       </div>
       <div class="bottom">
         <div class="tag">
