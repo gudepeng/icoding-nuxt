@@ -62,7 +62,7 @@
     },
     methods: {
       login(data) {
-        this.$refs.loginmodel.tagclose(data)
+        this.$store.dispatch('SHOWLONGINTYPE', data)
       },
       insertUserInfo() {
           this.userInfo = localStorage.getItem("userInfo");

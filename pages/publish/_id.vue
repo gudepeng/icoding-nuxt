@@ -2,7 +2,8 @@
   <div class="essay">
     <div class="form">
       <div class="title">
-        <input type="text" v-model="title" placeholder="文章标题" autofocus>
+        <el-button type="primary" round>主要按钮</el-button>
+        <el-input v-model="title" placeholder="文章标题"></el-input>
       </div>
       <p class="publish-tip">{{ publishTip }}</p>
       <div class="content">
@@ -33,12 +34,6 @@
   export default {
     name: 'Publish',
     layout: 'mycenter',
-    fetch ({ redirect, store }) {
-      // if (!store.state.token) {
-      //   redirect('/login')
-      // }
-      // store.dispatch('TAGS')
-    },
     data () {
       return {
         title: '',

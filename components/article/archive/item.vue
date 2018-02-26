@@ -20,10 +20,18 @@
             <i class="iconfont icon-comment"></i>
             <span>{{ item.articleComment || 0 }}</span>
           </span>
-          <span class="likes">
-            <i class="iconfont icon-like"></i>
-            <span>{{ item.articleLike || 0 }}</span>
-          </span>
+          <template v-if="item.likeId==null">
+            <span @click="likearticle(item.articleId)" class="likes">
+              <i class="iconfont icon-like"></i>
+              <span>{{ item.articleLike || 0 }}</span>
+            </span>
+          </template>
+          <template v-else>
+            <span @click="unlikearticle(item.articleId)" class="likes">
+              <i class="iconfont icon-like-on"></i>
+              <span>{{ item.articleLike || 0 }}</span>
+            </span>
+          </template>
           <span v-if="clicktype==null" class="iconfont categories">
             <i class="iconfont icon-list"></i>
             <span>{{formatArticleType(item.sortId)}}</span>
@@ -35,11 +43,14 @@
 </template>
 
 <script>
+  import Service from '~/plugins/axios'
+
   export default {
     name: 'article-list-item',
     props: {
       item: Object,
-      clicktype: Number
+      clicktype: Number,
+      keyindex: Number
     },
     computed: {
       mobileLayout() {
@@ -47,6 +58,24 @@
       }
     },
     methods: {
+      likearticle(id) {
+          let _this = this
+        Service.put('/like/' + id)
+          .then(function (response) {
+            console.log("like:" + response)
+            console.log(_this.$store.state.article.list.data.data[this.keyindex].likeId)
+          }, function (err) {
+            console.log("like:" + err)
+          })
+      },
+      unlikearticle(id) {
+        Service.delete('/like/' + id)
+          .then(response => {
+            console.log("like:" + response)
+          }, err => {
+            console.log("like:" + err)
+          })
+      },
       formatArticleType(type) {
         return this.$store.state.option.articleType[type]
       },
