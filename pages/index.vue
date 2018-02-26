@@ -1,8 +1,15 @@
 <template>
-  <div class="index">
-    <carrousel :article="article"></carrousel>
-    <announcement :announcement="announcement" @clicktype="clickTypeArticle"></announcement>
-    <article-list :article="article" @loadmore="loadmoreArticle"></article-list>
+  <div class="indexmain">
+    <div>
+      <carrousel :article="article"></carrousel>
+      <announcement :announcement="announcement" @clicktype="clickTypeArticle"></announcement>
+      <article-list :article="article" @loadmore="loadmoreArticle"></article-list>
+    </div>
+    <transition name="aside">
+      <keep-alive>
+        <aside-view v-if="!mobileLayout"></aside-view>
+      </keep-alive>
+    </transition>
   </div>
 </template>
 
@@ -11,6 +18,7 @@
   import Carrousel from '~/components/article/archive/carrousel'
   import announcement from '~/components/article/archive/announcement'
   import ArticleList from '~/components/article/archive/list'
+  import AsideView from '~/components/layout/aside.vue'
 
   export default {
     name: 'index',
@@ -26,7 +34,7 @@
       }
     },
     components: {
-      Carrousel, announcement, ArticleList
+      Carrousel, announcement, ArticleList, AsideView
     },
     computed: {
       article() {
@@ -40,7 +48,10 @@
           currentPage: this.article.data.page.currentPage + 1,
           sortId: this.ctype
         }
-      }
+      },
+      mobileLayout() {
+        return this.$store.state.option.mobileLayout
+      },
     },
     methods: {
       loadmoreArticle() {
@@ -53,3 +64,15 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+  @import "~assets/sass/mixins";
+  @import "~assets/sass/variables";
+
+  .indexmain{
+    width: 100%;
+    & > div{
+      width: 55em;
+      float:left;
+    }
+  }
+</style>
