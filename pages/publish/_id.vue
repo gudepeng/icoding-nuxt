@@ -2,7 +2,6 @@
   <div class="essay">
     <div class="form">
       <div class="title">
-        <el-button type="primary" round>主要按钮</el-button>
         <el-input v-model="title" placeholder="文章标题"></el-input>
       </div>
       <p class="publish-tip">{{ publishTip }}</p>
@@ -13,11 +12,11 @@
       </div>
       <div class="bottom">
         <div class="tag">
-          <input type="text" v-model="tag" placeholder="多个标签以英文逗号分隔">
+          <el-input v-model="tag" placeholder="多个标签以英文逗号分隔"></el-input>
         </div>
         <div class="btn">
-          <button type="button" @click="publish('publish')">发布</button>
-          <button type="button" @click="publish('draft')">存草稿</button>
+          <el-button type="primary" @click="publish('publish')" round>发布</el-button>
+          <el-button type="primary" @click="publish('draft')" round>存草稿</el-button>
         </div>
       </div>
       <div class="tags">
