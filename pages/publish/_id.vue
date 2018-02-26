@@ -1,10 +1,8 @@
 <template>
   <div class="essay">
-    <div class="form">
       <div class="title">
         <el-input v-model="title" placeholder="文章标题"></el-input>
       </div>
-      <p class="publish-tip">{{ publishTip }}</p>
       <div class="content">
           <top-editor style="margin-top: 4.5em;" v-model="content" :upload="upload" :options="options"></top-editor>
       </div>
@@ -23,7 +21,6 @@
           <a>{{item.tag}}</a>
         </span>
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -95,8 +92,10 @@
           // state: state,
           // date: Number(this.date) || Date.now()
         })
-        if(this.$store.state.article.publish.data ===0){
+        debugger
+        if(this.$store.state.article.publish.data.status ===0){
           this.publishTip = '发布成功';
+          this.$router.push(`/article/${this.$store.state.article.publish.data.result}`)
         }
         // this.publishTip = this.$store.state.publish.data
         //  发布成功

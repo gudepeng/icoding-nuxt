@@ -1,24 +1,9 @@
 <template>
-  <div class="carrousel" :class="{ mobile: mobileLayout }">
-    <transition name="module" mode="out-in">
-      <empty-box class="article-empty-box" v-if="!article.data.data.length">
-        <slot>No Result Article.</slot>
-      </empty-box>
-      <div class="swiper" v-swiper:swiper="swiperOption" v-else>
-        <div class="swiper-wrapper">
-          <div class="swiper-slide item" v-for="(article, index) in article.data.data.slice(0, 9)" :key="index">
-            <div class="content">
-              <img :src="buildThumb(article.thumb)" :alt="article.title">
-              <router-link :to="`/article/${article.id}`" class="title">
-                <span>{{ article.title }}</span>
-              </router-link>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
-    </transition>
-  </div>
+    <el-carousel height="200px">
+      <el-carousel-item v-for="item in 7" :key="item">
+        <h3>{{ item }}</h3>
+      </el-carousel-item>
+    </el-carousel>
 </template>
 
 <script>
@@ -76,78 +61,21 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '~assets/sass/variables';
-  @import '~assets/sass/mixins';
-  .carrousel {
-    height: 15em;
+  .el-carousel{
     margin-bottom: 1em;
-    position: relative;
-    overflow: hidden;
-    background-color: $module-bg;
-
-    > .swiper {
-
-      .item {
-
-        > .content {
-          width: 100%;
-          height: 15em;
-          position: relative;
-          overflow: hidden;
-
-          > img {
-            width: 100%;
-            @include css3-prefix(transform, rotate(0deg) scale(1));
-            @include css3-prefix(transition, transform 1s);
-
-            &:hover {
-              @include css3-prefix(transform, rotate(2deg) scale(1.1));
-            }
-          }
-
-          > .title {
-            position: absolute;
-            top: 1.5rem;
-            right: 2rem;
-            color: #333;
-            background-color: rgba($module-hover-bg, .5);
-            margin: 0;
-            padding: 0 .5em;
-            height: 2em;
-            line-height: 2em;
-            font-size: 1em;
-            font-weight: bold;
-            border-radius: 1px;
-            letter-spacing: .3px;
-
-            &:hover {
-              color: #000;
-              background-color: rgba($module-hover-bg, .9);
-            }
-          }
-        }
-      }
+    &>.el-carousel__item h3 {
+      color: #475669;
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 200px;
+      margin: 0;
     }
+  }
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
 
-    &.mobile {
-      min-height: 8rem;
-      height: auto;
-
-      > .swiper {
-
-        .item {
-
-          > .content {
-            min-height: 8rem;
-            height: auto;
-
-            > .title {
-              max-width: 75%;
-              @include text-overflow;
-            }
-          }
-        }
-      }
-    }
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
   }
 </style>

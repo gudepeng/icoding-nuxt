@@ -97,7 +97,7 @@ export const mutations = {
   },
   PUBLISH_ARTICLE_SUCCESS(state, action) {
     state.publish.posting = false
-    state.publish.data = action.status
+    state.publish.data = action
   },
   PUBLISH_ARTICLE(state){
     state.publish.posting = true
