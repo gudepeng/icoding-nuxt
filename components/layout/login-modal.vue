@@ -109,8 +109,7 @@
           }
         })
           .then(response => {
-              debugger
-            localStorage.setItem("userInfo", response);
+            localStorage.setItem("userInfo", JSON.stringify(response));
             this.$emit('loginSuccess')
             this.tagclose()
             this.$store.dispatch('CLEARARTICLELIST')

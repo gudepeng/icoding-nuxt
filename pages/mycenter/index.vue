@@ -44,7 +44,7 @@
     },
     async mounted () {
       // 后台无需做ssr, 所以在mounted获取数据
-      await this.$store.dispatch('loadArticles', this.page)
+      await this.$store.dispatch('loadArticles', { currentPage: 1, sortId: null, userId: JSON.parse(localStorage.getItem("userInfo")).data.principal.userId})
     },
     computed: {
       articles () {
