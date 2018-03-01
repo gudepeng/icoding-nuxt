@@ -86,6 +86,7 @@ export default (content, tags, parseHtml = false) => {
   if (typeof content != 'string') {
     return ''
   }
+  content= content.replace(/\\n/g,'\n');
   // 返回解析内容
   return marked(content, { renderer })
 }
