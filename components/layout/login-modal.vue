@@ -1,13 +1,13 @@
 <template>
   <transition name="fade">
-    <div class="modal" v-show="showType">
+    <div class="modal" v-show="showtype!=null">
       <article>
         <header>
-          <span>{{lrtype==0?'登录':'注册'}}</span>
+          <span>{{showtype==0?'登录':'注册'}}</span>
           <i class="iconfont icon-close" @click="tagclose"></i>
         </header>
         <div class="section">
-          <template v-if="lrtype==0">
+          <template v-if="showtype==0">
             <div>
               <input type="text" v-model="loginform.username" placeholder="请输入用户名"/>
             </div>
@@ -18,11 +18,11 @@
               <button @click="login">登录</button>
             </div>
             <div class="tool">
-              <span class="clickable" @click="lrtype=1">注册</span>
+              <span class="clickable" @click="$store.dispatch('SHOWLONGINTYPE', 1)">注册</span>
               <span class="right clickable">忘记密码</span>
             </div>
           </template>
-          <template v-else-if="lrtype==1">
+          <template v-else-if="showtype==1">
             <div>
               <input type="text" v-model="registeredform.userName" placeholder="请输入用户名"/>
             </div>
@@ -36,7 +36,7 @@
               <button @click="registered">注册</button>
             </div>
             <div class="tool">
-              <span class="clickable" @click="lrtype=0">已有账号登录</span>
+              <span class="clickable" @click="$store.dispatch('SHOWLONGINTYPE', 0)">已有账号登录</span>
             </div>
           </template>
           <div>
@@ -67,8 +67,6 @@
     props: {},
     data() {
       return {
-        lrtype:0,
-        showType: false,
         loginform: {
           username: null,
           password: null
@@ -89,17 +87,17 @@
         }
       }
     },
+    computed: {
+      showtype() {
+        return this.$store.state.login.showlogintype
+      }
+    },
     mounted() {
 
     },
     methods: {
-      loginSuccess(){
-        this.tagclose()
-        this.$emit("loginSuccess")
-      },
       tagclose(data) {
-        this.lrtype=data
-        this.showType = !this.showType
+        this.$store.dispatch('SHOWLONGINTYPE', null)
       },
       login(){
         this.loginsuccess(qs.stringify(this.loginform))
@@ -108,13 +106,15 @@
         Service.post('/login/form',form , {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          withCredentials: true
+          }
         })
           .then(response => {
+              debugger
             localStorage.setItem("userInfo", response);
+            this.$emit('loginSuccess')
             this.tagclose()
-            this.$emit("loginSuccess")
+            this.$store.dispatch('CLEARARTICLELIST')
+            this.$router.push('/')
           }, err => {
             console.log(err)
           })

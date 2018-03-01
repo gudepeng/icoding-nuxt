@@ -1,8 +1,8 @@
 /*
-*
-* 文章数据状态
-*
-*/
+ *
+ * 文章数据状态
+ *
+ */
 
 export const state = () => {
   return {
@@ -31,7 +31,6 @@ export const state = () => {
 }
 
 export const mutations = {
-
   // List
   CLEAR_LIST(state) {
     state.list.data = {
@@ -58,7 +57,6 @@ export const mutations = {
     state.list.data.data.push.apply(state.list.data.data, action.result.data)
     state.list.data.page = action.result.page
   },
-
   // Hot
   REQUEST_HOT_LIST(state) {
     state.hot.fetching = true
@@ -70,7 +68,6 @@ export const mutations = {
     state.hot.fetching = false
     state.hot.data = action.result
   },
-
   // Detail
   CLEAR_DETAIL(state) {
     state.detail.data = {}
@@ -86,7 +83,6 @@ export const mutations = {
     state.detail.fetching = false
     state.detail.data = action.result
   },
-
   // 喜欢某篇文章
   LIKE_ARTICLE(state, action) {
     let article = state.detail.data
@@ -101,7 +97,7 @@ export const mutations = {
   },
   PUBLISH_ARTICLE_SUCCESS(state, action) {
     state.publish.posting = false
-    state.publish.data = action.status
+    state.publish.data = action
   },
   PUBLISH_ARTICLE(state){
     state.publish.posting = true

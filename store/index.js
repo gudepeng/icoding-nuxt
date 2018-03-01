@@ -6,8 +6,6 @@
 
 import Service from '~/plugins/axios'
 import UaParse from '~/utils/ua-parse'
-import qs from 'qs'
-import EventBus from '~/utils/event-bus'
 // global actions
 export const actions = {
 
@@ -202,23 +200,7 @@ export const actions = {
       commit('sitemap/GET_ARTICLES_FAILURE', err)
     })
   },
-
   // 获取文章列表
-  // loadArticles({ commit }, params = { page: 1 }) {
-  //   commit('article/REQUEST_LIST')
-  //   return Service.get('/article', { params })
-  //   .then(response => {
-  //     const success = !!response.status && response.data && Object.is(response.data.code, 1)
-  //     const isFirstPage = params.page && params.page > 1
-  //     const commitName =  `article/${isFirstPage ? 'ADD' : 'GET'}_LIST_SUCCESS`
-  //     if(success) commit(commitName, response.data)
-  //     if(!success) commit('article/GET_LIST_FAILURE')
-  //   })
-  //   .catch(err => {
-  //     commit('article/GET_LIST_FAILURE', err)
-  //   })
-  // },
-
   loadArticles({ commit }, params = { currentPage: 1, sortId: null}) {
     commit('article/REQUEST_LIST')
     return Service.get('/article', { params })
@@ -234,20 +216,6 @@ export const actions = {
       })
   },
   // 获取文章详情
-  // loadArticleDetail({ commit }, params = {}) {
-  //
-  //   commit('article/REQUEST_DETAIL')
-  //   return Service.get(`/article/${ params.article_id }`)
-  //   .then(response => {
-  //     const success = !!response.status && response.data && Object.is(response.data.code, 1)
-  //     if(success) commit('article/GET_DETAIL_SUCCESS', response.data)
-  //     if(!success) commit('article/GET_DETAIL_FAILURE')
-  //     return Promise.resolve(response.data)
-  //   }, err => {
-  //     commit('article/GET_DETAIL_FAILURE', err)
-  //     return Promise.reject(err)
-  //   })
-  // },
   loadArticleDetail({ commit }, params = {}) {
     commit('article/REQUEST_DETAIL')
     return Service.get(`/article/${ params.article_id }`)
@@ -279,7 +247,7 @@ export const actions = {
     })
   },
   //保存文章
-  PUBLISH_ARTICLE({ commit, state }, params) {
+  PUBLISH_ARTICLE({ commit }, params) {
     // 如果数据已存在，则直接返回Promise成功，并返回数据
     // 不存在则请求新数据
     return Service.put('/article', params).then(response => {
@@ -291,5 +259,24 @@ export const actions = {
       commit('article/PUBLISH_ARTICLE_FAILURE', err)
       return Promise.reject(err)
     })
+  },
+  //修改登录状态
+  SHOWLONGINTYPE({ commit }, params) {
+    commit('login/SHOW_LOGIN', params)
+  },
+  CLEARARTICLELIST({ commit }, params = { currentPage: 1, sortId: null}) {
+    commit('article/CLEAR_LIST')
+    commit('article/REQUEST_LIST')
+    return Service.get('/article', { params })
+      .then(response => {
+        const success = !!response.status && response.data && Object.is(response.data.status, 0)
+        const isFirstPage = params.currentPage && params.currentPage > 1
+        const commitName =  `article/${isFirstPage ? 'ADD' : 'GET'}_LIST_SUCCESS`
+        if(success) commit(commitName, response.data)
+        if(!success) commit('article/GET_LIST_FAILURE')
+      })
+      .catch(err => {
+        commit('article/GET_LIST_FAILURE', err)
+      })
   }
 }

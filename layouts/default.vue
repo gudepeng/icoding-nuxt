@@ -11,8 +11,6 @@
         <div id="main-content"
              class="main-content"
              :class="{
-               'full-column': fullColumn,
-               'error-column': errorColumn,
                'mobile-layout': mobileLayout,
                [$route.name]: true
               }">
@@ -20,11 +18,6 @@
             <nuxt></nuxt>
           </keep-alive>
         </div>
-        <transition name="aside">
-          <keep-alive>
-            <aside-view v-if="!fullColumn && !errorColumn && !mobileLayout"></aside-view>
-          </keep-alive>
-        </transition>
       </main>
       <tool-view v-if="!mobileLayout && !['app', 'music', 'service'].includes($route.name)"></tool-view>
       <footer-view v-if="!mobileLayout"></footer-view>
@@ -39,7 +32,7 @@
  import Background from '~/components/layout/background.vue'
  import Header from '~/components/layout/header.vue'
  import Tool from '~/components/layout/tool.vue'
-  import Aside from '~/components/layout/aside.vue'
+
   import Footer from '~/components/layout/footer.vue'
  export default {
    name: 'app',
@@ -60,23 +53,17 @@
       emoji233333() {
         return EventBus.emoji233333
       },
-      fullColumn () {
-        return this.$store.state.option.fullColumn
-      },
-      errorColumn () {
-        return this.$store.state.option.errorColumn
-      },
       mobileLayout() {
         return this.$store.state.option.mobileLayout
       },
       mobileSidebar() {
         return this.$store.state.option.mobileSidebar
       }
-    },components: {
+    },
+    components: {
       Background,
       HeaderView: Header,
       ToolView: Tool,
-      AsideView: Aside,
       FooterView: Footer
     }
  }
@@ -86,31 +73,8 @@
 @import "~assets/sass/mixins";
 @import "~assets/sass/variables";
 #app {
-  &[v-cloak] {
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-  }
-  #app-aside {
-    width: 68%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 9999;
-    background-color: $mobile-aside-bg;
-    transform: translateX(-100%);
-    transition: $mobile-aisde-transition;
-
-    &.open {
-      overflow: hidden;
-      transform: translateX(0);
-      transition: $mobile-aisde-transition;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
 
   #app-main {
-    transition: $mobile-aisde-transition;
 
     &.open {
       transition: $mobile-aisde-transition;
@@ -137,7 +101,7 @@
 
       .main-content {
         float: left;
-        width: 55em;
+        width: 100%;
         position: relative;
         overflow: hidden;
         @include css3-prefix(transition, width 0.35s);
@@ -152,17 +116,6 @@
 
         &:fullscreen {
           overflow-y: auto;
-        }
-
-        &.full-column {
-          width: 62.5em;
-          @include css3-prefix(transition, width 0.35s);
-        }
-
-        &.error-column {
-          width: 100%;
-          margin: 0;
-          @include css3-prefix(transition, width 0.35s);
         }
 
         &.mobile-layout {

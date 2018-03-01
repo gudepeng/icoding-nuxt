@@ -1,22 +1,18 @@
 <template>
   <div class="essay">
-    <div class="form">
       <div class="title">
-        <input type="text" v-model="title" placeholder="文章标题" autofocus>
+        <el-input v-model="title" placeholder="文章标题"></el-input>
       </div>
-      <p class="publish-tip">{{ publishTip }}</p>
       <div class="content">
-        <no-ssr>
-          <top-editor v-model="content" :upload="upload" :options="options"></top-editor>
-        </no-ssr>
+          <top-editor style="margin-top: 4.5em;" v-model="content" :upload="upload" :options="options"></top-editor>
       </div>
       <div class="bottom">
         <div class="tag">
-          <input type="text" v-model="tag" placeholder="多个标签以英文逗号分隔">
+          <el-input v-model="tag" placeholder="多个标签以英文逗号分隔"></el-input>
         </div>
         <div class="btn">
-          <button type="button" @click="publish('publish')">发布</button>
-          <button type="button" @click="publish('draft')">存草稿</button>
+          <el-button type="primary" @click="publish('publish')" round>发布</el-button>
+          <el-button type="primary" @click="publish('draft')" round>存草稿</el-button>
         </div>
       </div>
       <div class="tags">
@@ -25,7 +21,6 @@
           <a>{{item.tag}}</a>
         </span>
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -33,12 +28,6 @@
   export default {
     name: 'Publish',
     layout: 'mycenter',
-    fetch ({ redirect, store }) {
-      // if (!store.state.token) {
-      //   redirect('/login')
-      // }
-      // store.dispatch('TAGS')
-    },
     data () {
       return {
         title: '',
@@ -103,8 +92,10 @@
           // state: state,
           // date: Number(this.date) || Date.now()
         })
-        if(this.$store.state.article.publish.data ===0){
+        debugger
+        if(this.$store.state.article.publish.data.status ===0){
           this.publishTip = '发布成功';
+          this.$router.push(`/article/${this.$store.state.article.publish.data.result}`)
         }
         // this.publishTip = this.$store.state.publish.data
         //  发布成功

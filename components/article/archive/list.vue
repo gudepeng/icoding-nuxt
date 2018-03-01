@@ -16,7 +16,7 @@
         </empty-box>
         <transition-group name="fade" tag="div" v-else>
           <list-item v-for="(item, index) in article.data.data" :clicktype="article.data.sortId" :item="item"
-                     :key="index"></list-item>
+                     :keyindex="index" :key="index"></list-item>
         </transition-group>
       </transition>
     </div>

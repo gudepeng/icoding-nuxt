@@ -15,7 +15,7 @@
         </div>
         <div class="navbar-longin">
           <div v-show="userInfo==null">
-            <span @click="$router.push('/publish')" class="navbar-slogan">写文章</span>
+            <span @click="writearticle" class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
             <span class="navbar-slogan" @click="login(0)">登录</span>
             <span class="navbar-slogan">&</span>
@@ -60,12 +60,22 @@
     mounted() {
       this.userInfo = localStorage.getItem("userInfo");
     },
+    computed:{
+
+    },
     methods: {
       login(data) {
-        this.$refs.loginmodel.tagclose(data)
+        this.$store.dispatch('SHOWLONGINTYPE', data)
       },
       insertUserInfo() {
           this.userInfo = localStorage.getItem("userInfo");
+      },
+      writearticle() {
+          if(this.userInfo) {
+            this.$router.push('/publish')
+          }else {
+            this.$store.dispatch('SHOWLONGINTYPE', 0)
+          }
       }
     },
     components: {
