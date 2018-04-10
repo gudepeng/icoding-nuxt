@@ -9,7 +9,7 @@
 <script>
 
   export default {
-    name: 'index-carrousel',
+    name: 'carrousel',
     data() {
       return {
         swiperOption: {

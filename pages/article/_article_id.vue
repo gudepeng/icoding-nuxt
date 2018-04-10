@@ -19,7 +19,7 @@
         </div>
       </transition>
     </div>
-    <share-box class="article-share" v-if="!fetching && article.articleContent"></share-box>
+
     <transition name="module" mode="out-in">
       <div class="metas" v-if="!fetching && article.articleTitle">
         <p class="item">
@@ -30,14 +30,6 @@
             <span>{{ buildDateTitle(article.articleTime) }}</span>
           </router-link>
           <span>&nbsp;发布在&nbsp;</span>
-          <!--<router-link :key="index"-->
-                       <!--:to="`/category/${category.slug}`"-->
-                       <!--:title="category.description || category.name"-->
-                       <!--v-for="(category, index) in article.articleTag.split(',')">-->
-            <!--<span>{{ category.name }}</span>-->
-            <!--<span v-if="article.category&& article.category[index + 1]">、</span>-->
-          <!--</router-link>-->
-          <!--<span v-for="(category, index) in article.articleTag.split(',')">{{ category.name }}</span>-->
           <span v-if="article.sortId">{{article.sortId}}</span>
           <span v-if="!article.sortId">未知</span>
           <span>&nbsp;分类下，当前已被围观&nbsp;</span>
@@ -55,22 +47,6 @@
             <span v-if="article.tag && article.tag[index + 1]">、</span>
           </router-link>
         </p>
-        <p class="item">
-          <span>永久地址：</span>
-          <span ref="copy_url_btn"
-                class="site-url"
-                :data-clipboard-text="`https://surmon.me/article/${this.article.id}`">
-                <span>https://surmon.me/article/{{ article.id }}</span>
-          </span>
-        </p>
-        <div class="item">
-          <span>版权声明：</span>
-          <span>自由转载-署名-非商业性使用</span>
-          <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-          <a href="https://creativecommons.org/licenses/by-nc/3.0/cn/deed.zh"
-             target="_blank"
-             rel="external nofollow noopenter">Creative Commons BY-NC 3.0 CN</a>
-        </div>
       </div>
     </transition>
     <div class="related" v-if="article.related && article.related && !mobileLayout">
@@ -549,8 +525,6 @@
       margin-bottom: 1em;
       background-color: $module-bg;
 
-      > .share-box {
-      }
     }
 
     > .metas {

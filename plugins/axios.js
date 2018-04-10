@@ -8,7 +8,7 @@ axios.defaults.headers.delete['Content-Type'] = 'application/json';
 
 const service = axios.create({
   //baseURL: 'http://39.106.214.109:8081',
-  baseURL: 'http://127.0.0.1:80',
+  baseURL: '/api',
   withCredentials: true,
 })
 
@@ -24,7 +24,7 @@ service.interceptors.response.use(
     return response;
   },
   error => {
-    if(error.response.status===401){
+    if(error.response&&error.response.status===401){
       store.dispatch('SHOWLONGINTYPE', 0)
     }else{
       return Promise.reject(error)

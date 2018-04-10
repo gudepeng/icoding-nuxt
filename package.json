@@ -19,6 +19,9 @@
     "highlight.js": "^9.12.0",
     "markdown-it": "^8.4.0",
     "marked": "^0.3.12",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
     "nuxt": "^1.0.0",
     "particles.js": "^2.0.0",
     "top-editor": "^0.0.5",
@@ -26,6 +29,8 @@
     "element-ui": "^2.1.0"
   },
   "devDependencies": {
+    "@nuxtjs/axios": "^5.3.1",
+    "@nuxtjs/proxy": "^1.2.4",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",

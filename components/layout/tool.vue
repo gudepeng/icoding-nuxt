@@ -74,7 +74,7 @@
             font-size: 2em;
             color: #0088f5;
           }
-        },
+        }
         > .feedback {
           display: block;
           width: 3em;

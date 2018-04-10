@@ -103,7 +103,8 @@
         this.loginsuccess(qs.stringify(this.loginform))
       },
       loginsuccess(form){
-        Service.post('/login/form',form , {
+        this.$store.dispatch('login', form)
+      /*  Service.post('/login/form',form , {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
@@ -116,7 +117,7 @@
             this.$router.push('/')
           }, err => {
             console.log(err)
-          })
+          })*/
       },
       registered(){
         Service.put('/user', this.registeredform)
