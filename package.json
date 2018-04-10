@@ -29,8 +29,6 @@
     "element-ui": "^2.1.0"
   },
   "devDependencies": {
-    "@nuxtjs/axios": "^5.3.1",
-    "@nuxtjs/proxy": "^1.2.4",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",

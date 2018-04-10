@@ -24,7 +24,6 @@ export const actions = {
       // store.dispatch('loadGlobalOption'),
       // 内容数据
       // store.dispatch('loadTagList'),
-      // store.dispatch('loadCategories')
     ]
     // 如果不是移动端的话，则请求热门文章
     if (!isMobile) {

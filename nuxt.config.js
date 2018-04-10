@@ -47,15 +47,7 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    vendor: ['axios']
   },
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/proxy'
-  ],
-  proxy: [
-    ['/api', {target: 'http://127.0.0.1:8081'}]
-  ],
   plugins: [
     {src: '~/plugins/filters.js'},
     {src: '~/plugins/swiper.js', ssr: false},
