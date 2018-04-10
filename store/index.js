@@ -12,7 +12,6 @@ export const actions = {
   // 全局服务初始化
   nuxtServerInit(store, {params, route, isServer, req}) {
     // 检查设备类型
-    console.log(req.session+ "          "+req.headers['Cookie'])
     const userAgent = isServer ? req.headers['user-agent'] : navigator.userAgent
     const {isMobile, isOpera, isIE, isSafari, isEdge, isFF, isBB, isChrome, isMaxthon, isIos} = UaParse(userAgent)
     const mustJpg = (isIos || isFF || isMaxthon || isSafari || isBB || isIE || isEdge)
@@ -21,7 +20,7 @@ export const actions = {
     store.commit('option/SET_USER_AGENT', userAgent)
     const initAppData = [
       // 配置数据
-      // store.dispatch('loadAdminInfo'),
+      store.dispatch('loadAdminInfo'),
       // store.dispatch('loadGlobalOption'),
       // 内容数据
       // store.dispatch('loadTagList'),
@@ -41,17 +40,13 @@ export const actions = {
   },
   // 获取博主资料
   loadAdminInfo({commit}) {
-    commit('option/REQUEST_ADMIN_INFO')
-    return Service.get('/auth')
+    console.log("测试能不能进来")
+    return Service.get('/user/me')
       .then(response => {
-        const success = !!response.status && response.data && Object.is(response.data.code, 1)
-        if (success) commit('option/REQUEST_ADMIN_INFO_SUCCESS', response.data)
-        if (!success) commit('option/REQUEST_ADMIN_INFO_FAILURE')
+       console.log("ccccccsssssssss"+response)
       }, err => {
-        commit('option/REQUEST_ADMIN_INFO_FAILURE', err)
       })
   },
-
   // 获取全局配置
   loadGlobalOption({commit}) {
     commit('option/REQUEST_GLOBAL_OPTIONS')

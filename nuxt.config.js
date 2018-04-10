@@ -54,7 +54,7 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   proxy: [
-    ['/api', {target: 'http://39.106.214.109:8081'}]
+    ['/api', {target: 'http://127.0.0.1:8081'}]
   ],
   plugins: [
     {src: '~/plugins/filters.js'},
