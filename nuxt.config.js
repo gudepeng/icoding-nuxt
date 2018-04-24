@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 module.exports = {
   /*
    ** Headers of the page
@@ -60,5 +62,15 @@ module.exports = {
     'highlight.js/styles/ocean.css',
     {src: '~assets/sass/app.scss', lang: 'sass'},
     'element-ui/lib/theme-chalk/index.css'
-  ]
+  ],
+  generate: {
+    routes: function () {
+      return axios.get('http://39.106.214.109:8081/api/article', {currentPage: 1, pageNumber: 10000})
+        .then(res => {
+          return res.data.result.data.map((article) => {
+            return '/article/' + article.articleId
+          })
+        })
+    }
+  }
 }

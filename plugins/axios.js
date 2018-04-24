@@ -8,7 +8,6 @@ axios.defaults.headers.delete['Content-Type'] = 'application/json';
 
 const service = axios.create({
   baseURL: 'http://39.106.214.109:8081/api',
-  //baseURL: '/api',
   withCredentials: true,
 })
 
