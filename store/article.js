@@ -34,12 +34,10 @@ export const mutations = {
   // List
   CLEAR_LIST(state) {
     state.list.data = {
-      result: {
         page: {
           currentPage: 0
         },
         data: []
-      }
     }
   },
   REQUEST_LIST(state) {

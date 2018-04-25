@@ -23,10 +23,7 @@
   export default {
     name: 'index',
     fetch ({store}) {
-      return Promise.all([
-        store.dispatch('loadArticles'),
-        store.dispatch('loadAnnouncements')
-      ])
+      return Promise.all([])
     },
     data() {
       return {
@@ -36,28 +33,45 @@
     components: {
       Carrousel, announcement, ArticleList, AsideView
     },
+    mounted: function () {
+      /*this.$store.dispatch('loadAdminInfo')*/
+      this.$store.dispatch('loadArticles')
+      this.$store.dispatch('loadHotArticles')
+    },
     computed: {
-      article() {
+      article()
+      {
         return this.$store.state.article.list
-      },
-      announcement() {
+      }
+      ,
+      announcement()
+      {
         return this.$store.state.announcement
-      },
-      nextPageParams() {
+      }
+      ,
+      nextPageParams()
+      {
         return {
           currentPage: this.article.data.page.currentPage + 1,
           sortId: this.ctype
         }
-      },
-      mobileLayout() {
+      }
+      ,
+      mobileLayout()
+      {
         return this.$store.state.option.mobileLayout
-      },
-    },
+      }
+      ,
+    }
+    ,
     methods: {
-      loadmoreArticle() {
+      loadmoreArticle()
+      {
         this.$store.dispatch('loadArticles', this.nextPageParams)
-      },
-      clickTypeArticle(data) {
+      }
+      ,
+      clickTypeArticle(data)
+      {
         this.ctype = data
         this.$store.dispatch('loadArticles', {currentPage: 1, sortId: data})
       }
@@ -68,11 +82,11 @@
   @import "~assets/sass/mixins";
   @import "~assets/sass/variables";
 
-  .indexmain{
+  .indexmain {
     width: 100%;
-    & > div{
+    & > div {
       width: 55em;
-      float:left;
+      float: left;
     }
   }
 </style>

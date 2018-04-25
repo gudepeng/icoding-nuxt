@@ -3,7 +3,7 @@
     <div class="modal" v-show="showtype!=null">
       <article>
         <header>
-          <span>{{showtype==0?'登录':'注册'}}</span>
+          <span>{{showtype == 0 ? '登录' : '注册'}}</span>
           <i class="iconfont icon-close" @click="tagclose"></i>
         </header>
         <div class="section">
@@ -43,12 +43,12 @@
             <div class="oauth-box">
               <div class="hint">第三方账号登录：</div>
               <div class="oauth">
-                  <div class="oauth-bg">
-                    <img title="微信" src="https://gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" class="oauth-btn">
-                  </div>
-                  <div class="oauth-bg">
-                    <img title="GitHub" src="https://gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" class="oauth-btn">
-                  </div>
+                <div class="oauth-bg">
+                  <img title="微信" src="https://gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" class="oauth-btn">
+                </div>
+                <div class="oauth-bg">
+                  <img title="GitHub" src="https://gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" class="oauth-btn">
+                </div>
               </div>
             </div>
           </div>
@@ -71,10 +71,10 @@
           username: null,
           password: null
         },
-        registeredform:{
+        registeredform: {
           userName: null,
           userPwd: null,
-          userEmail:null
+          userEmail: null
         }
       }
     },
@@ -104,14 +104,13 @@
       },
       loginsuccess(form){
         //this.$store.dispatch('login', form)
-      Service.post('/login/form',form , {
+        Service.post('/login/form', form, {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         })
           .then(response => {
-            localStorage.setItem("userInfo", JSON.stringify(response));
-            this.$emit('loginSuccess')
+            this.$store.dispatch('loadAdminInfo')
             this.tagclose()
             this.$store.dispatch('CLEARARTICLELIST')
             this.$router.push('/')
@@ -122,9 +121,11 @@
       registered(){
         Service.put('/user', this.registeredform)
           .then(response => {
-            console.log(response)
-            if(response.data.status==0){
-              this.loginsuccess(qs.stringify({username:this.registeredform.userName,password:this.registeredform.userPwd}))
+            if (response.data.status == 0) {
+              this.loginsuccess(qs.stringify({
+                username: this.registeredform.userName,
+                password: this.registeredform.userPwd
+              }))
             }
           }, err => {
             console.log(err)
@@ -238,7 +239,7 @@
           box-sizing: border-box;
           cursor: pointer;
         }
-        .oauth-box{
+        .oauth-box {
           margin-top: 1.2em;
           line-height: 1.9em;
           color: #8b9196;
@@ -248,7 +249,7 @@
             justify-content: center;
             display: flex;
             & > .oauth-bg {
-              margin:0em 1em 0em 1em;
+              margin: 0em 1em 0em 1em;
               width: 3em;
               height: 3em;
               border-radius: 50%;

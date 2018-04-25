@@ -4,6 +4,7 @@
       <div class="item-body">
         <h4 class="item-title">
           <router-link :to="`/article/${item.articleId}`" :title="item.articleTitle">{{ item.articleTitle }}
+
           </router-link>
         </h4>
         <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.articleSummary"></p>
@@ -60,7 +61,7 @@
     methods: {
       likearticle(id) {
 
-        if(localStorage.getItem("userInfo")) {
+        if (this.$store.state.login.authUser != null) {
           let _this = this
           Service.put('/like/' + id)
             .then(function (response) {
@@ -69,7 +70,7 @@
             }, function (err) {
               console.log("like:" + err)
             })
-        }else {
+        } else {
           this.$store.dispatch('SHOWLONGINTYPE', 0)
         }
       },

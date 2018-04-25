@@ -11,7 +11,6 @@
             <span class="navbar-slogan">开源项目</span>
             <span class="navbar-slogan">分享资源</span>
             <span class="navbar-slogan">视频教程</span>
-            <span class="navbar-slogan">{{ $store.state.login.authUser }}</span>
           </div>
         </div>
         <div class="navbar-longin">
@@ -40,7 +39,7 @@
         <img v-if="preload" src="/images/about-background-star-2.png" alt="background">
       </div>
     </nav>
-    <popup-modal ref="loginmodel" @loginSuccess="insertUserInfo">
+    <popup-modal ref="loginmodel">
     </popup-modal>
   </header>
 </template>
@@ -54,22 +53,20 @@
     name: 'layout-header',
     data() {
       return {
-        userInfo: null,
         preload: false,
       }
     },
-    mounted() {
-      this.userInfo = localStorage.getItem("userInfo");
+    mounted: function () {
+      this.$store.dispatch('loadAdminInfo')
     },
-    computed:{
-
+    computed: {
+      userInfo() {
+        return this.$store.state.login.authUser
+      }
     },
     methods: {
       login(data) {
         this.$store.dispatch('SHOWLONGINTYPE', data)
-      },
-      insertUserInfo() {
-          this.userInfo = localStorage.getItem("userInfo");
       },
       writearticle() {
           if(this.userInfo) {

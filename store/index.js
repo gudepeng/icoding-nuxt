@@ -11,8 +11,6 @@ export const actions = {
   nuxtServerInit(store, {params, route, isServer, req}) {
     const initAppData = [
       // 配置数据
-      store.dispatch('loadAdminInfo'),
-      store.dispatch('loadHotArticles')
     ]
     return Promise.all(initAppData)
   },
@@ -20,6 +18,10 @@ export const actions = {
   loadAdminInfo({commit}) {
     return Service.get('/user/me')
       .then(response => {
+        console.log(response.status  + "     " + response.data  + "     " + response.data.status)
+        const success = !!response.status && response.data && Object.is(response.data.status, 0)
+        console.log("success:" + success  + "      " + response.data)
+        if (success) commit('login/SET_USER', response.data)
       }, err => {
       })
   },
