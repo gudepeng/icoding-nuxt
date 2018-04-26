@@ -24,7 +24,17 @@
           <div v-show="userInfo!=null">
             <span @click="$router.push('/publish')" class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
-            <img @click="$router.push('/mycenter')" src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
+            <el-dropdown @command="handleCommand">
+              <span class="el-dropdown-link">
+                 <img @click="$router.push('/mycenter')" src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item  command="publish">写文章</el-dropdown-item>
+                <el-dropdown-item divided command="mycenter">我的主页</el-dropdown-item>
+                <el-dropdown-item  command="mycenter">我喜欢的</el-dropdown-item>
+                <el-dropdown-item divided command="logout">登出</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </div>
       </div>
@@ -69,11 +79,18 @@
         this.$store.dispatch('SHOWLONGINTYPE', data)
       },
       writearticle() {
-          if(this.userInfo) {
-            this.$router.push('/publish')
-          }else {
-            this.$store.dispatch('SHOWLONGINTYPE', 0)
-          }
+        if (this.userInfo) {
+          this.$router.push('/publish')
+        } else {
+          this.$store.dispatch('SHOWLONGINTYPE', 0)
+        }
+      },
+      handleCommand(command){
+        if(command=="logout"){
+          this.$store.dispatch('logout')
+        }else{
+          this.$router.push('/'+command)
+        }
       }
     },
     components: {

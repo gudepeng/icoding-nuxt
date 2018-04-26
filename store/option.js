@@ -1,8 +1,8 @@
 /*
-*
-* 全局设置数据状态
-*
-*/
+ *
+ * 全局设置数据状态
+ *
+ */
 
 export const state = () => {
   return {
@@ -44,14 +44,31 @@ export const state = () => {
         }
       }
     },
-    articleType: {
-      '1': '前端',
-      '2': '后端',
-      '3': '手机端',
-      '4': '人工智能',
-      '5': '杂谈'
-    }
-
+    articleType: [
+      {
+        value: '1', label: '前端'
+      },
+      {
+        value: '2', label: '后端'
+      },
+      {
+        value: '3', label: '手机端'
+      },
+      {
+        value: '4', label: '人工智能'
+      },
+      {
+        value: '5', label: '杂谈'
+      }
+    ],
+    articleUpType: [{
+      value: '1',
+      label: '置顶'
+    }, {
+      value: '0',
+      label: '不置顶'
+    }],
+    resourceType: [],
   }
 }
 
@@ -119,7 +136,7 @@ export const mutations = {
 
   // 喜欢本站
   LIKE_SITE(state, action) {
-    state.globalOption.data.meta.likes ++
+    state.globalOption.data.meta.likes++
   },
 
   // 切换弹幕状态
@@ -138,5 +155,8 @@ export const mutations = {
     } else {
       state.openWebrtc = !state.openWebrtc
     }
+  },
+  SET_ARTICLETYPE(state, articletype) {
+    state.articleType = articletype
   }
 }

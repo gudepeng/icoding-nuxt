@@ -34,7 +34,6 @@
       Carrousel, announcement, ArticleList, AsideView
     },
     mounted: function () {
-      /*this.$store.dispatch('loadAdminInfo')*/
       this.$store.dispatch('loadArticles')
       this.$store.dispatch('loadHotArticles')
     },

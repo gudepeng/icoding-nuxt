@@ -9,18 +9,16 @@ export const actions = {
 
   // 全局服务初始化
   nuxtServerInit(store, {params, route, isServer, req}) {
-    const initAppData = [
-      // 配置数据
-    ]
+    const initAppData = []
     return Promise.all(initAppData)
   },
   // 获取博主资料
   loadAdminInfo({commit}) {
     return Service.get('/user/me')
       .then(response => {
-        console.log(response.status  + "     " + response.data  + "     " + response.data.status)
+        console.log(response.status + "     " + response.data + "     " + response.data.status)
         const success = !!response.status && response.data && Object.is(response.data.status, 0)
-        console.log("success:" + success  + "      " + response.data)
+        console.log("success:" + success + "      " + response.data)
         if (success) commit('login/SET_USER', response.data)
       }, err => {
       })
@@ -246,7 +244,6 @@ export const actions = {
       }
     })
       .then(response => {
-        debugger
         if (response.status == 200) {
           commit('login/SET_USER', response)
           commit('login/SHOW_LOGIN', null)

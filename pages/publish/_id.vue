@@ -1,26 +1,50 @@
 <template>
-  <div class="essay">
-      <div class="title">
-        <el-input v-model="title" placeholder="文章标题"></el-input>
-      </div>
-      <div class="content">
-          <top-editor style="margin-top: 4.5em;" v-model="content" :upload="upload" :options="options"></top-editor>
-      </div>
-      <div class="bottom">
-        <div class="tag">
-          <el-input v-model="tag" placeholder="多个标签以英文逗号分隔"></el-input>
-        </div>
-        <div class="btn">
-          <el-button type="primary" @click="publish('publish')" round>发布</el-button>
-          <el-button type="primary" @click="publish('draft')" round>存草稿</el-button>
-        </div>
-      </div>
-      <div class="tags">
-        <span>选择已有标签: </span>
-        <span v-for="(item,index) in $store.state.tags" :key="index" @click="chooseTag(item)">
-          <a>{{item.tag}}</a>
-        </span>
-      </div>
+  <div>
+    <el-form ref="form" :model="article">
+      <el-form-item>
+        <el-input v-model="article.articleTitle" placeholder="文章标题"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input type="textarea" v-model="article.articleSummary" placeholder="文章摘要"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <top-editor v-model="article.articleContent" :upload="upload" :options="options"></top-editor>
+      </el-form-item>
+      <el-form-item label="文章标签：">
+        <el-tag
+          :key="tag"
+          v-for="tag in article.articleTag"
+          closable
+          :disable-transitions="false"
+          @close="handleClose(tag)">
+          {{tag}}
+        </el-tag>
+        <el-input
+          class="input-new-tag"
+          v-if="inputVisible"
+          v-model="inputValue"
+          ref="saveTagInput"
+          size="small"
+          @keyup.enter.native="handleInputConfirm"
+          @blur="handleInputConfirm">
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
+      </el-form-item>
+      <el-form-item label="文章分类：">
+        <el-select v-model="article.sortId" placeholder="请选择">
+          <el-option
+            v-for="item in articleType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="publish('publish')" round>发布</el-button>
+        <el-button type="primary" @click="publish('draft')" round>存草稿</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 <script>
@@ -30,10 +54,16 @@
     layout: 'mycenter',
     data () {
       return {
-        title: '',
-        content: '',
-        tag: '',
-        date: '',
+        article: {
+          articleContent: "",
+          articleSummary: "",
+          articleTag: [],
+          articleTitle: "",
+          articleTitleimage: "",
+          sortId: null,
+        },
+        inputVisible: false,
+        inputValue: '',
         publishTip: '',
         articleID: this.$route.params.id || '',
         upload: {
@@ -45,7 +75,11 @@
         options: {}
       }
     },
-
+    computed: {
+      articleType(){
+        return this.$store.state.option.articleType
+      }
+    },
     async mounted () {
       if (process.browser) {
         this.options = {
@@ -55,7 +89,8 @@
             if (require('highlight.js').getLanguage(lang)) {
               try {
                 return require('highlight.js').highlight(lang, str).value
-              } catch (__) { }
+              } catch (__) {
+              }
             }
             return ''
           }
@@ -63,65 +98,65 @@
       }
       // 有id就获取文章内容
       if (this.articleID) {
-        await this.$store.dispatch('loadArticleDetail', {'article_id':this.articleID})
+        await this.$store.dispatch('loadArticleDetail', {'article_id': this.articleID})
         let articleDetail = this.$store.state.article.detail.data
-        this.title = articleDetail.articleTitle
-        this.content = articleDetail.articleContent
-        this.tag = articleDetail.articleTag + ","
-        this.date = articleDetail.articleTime
+        this.article = articleDetail
       }
     },
     methods: {
       async publish (state) {
-        if (!this.title) {
-          this.publishTip = '文章标题不能为空！'
-          return
-        }
-        if (!this.content) {
-          this.publishTip = '文章正文不能为空！'
-          return
-        }
-        await this.$store.dispatch('PUBLISH_ARTICLE', {
-          articleTitle: this.title,
-          articleContent: this.content,
-          articleTag:'111',
-          sortId:'1',
-          articleSummary:'ddddd',
-          articleUp:1
-          // tag: this.trim(this.tag),
-          // state: state,
-          // date: Number(this.date) || Date.now()
-        })
-        debugger
-        if(this.$store.state.article.publish.data.status ===0){
+        let art = this.article
+        art.articleTag = this.article.articleTag.join(",");
+        await this.$store.dispatch('PUBLISH_ARTICLE', this.article)
+        if (this.$store.state.article.publish.data.status === 0) {
           this.publishTip = '发布成功';
-          this.$router.push(`/article/${this.$store.state.article.publish.data.result}`)
         }
-        // this.publishTip = this.$store.state.publish.data
-        //  发布成功
-        this.title = ''
-        this.content = ''
-        this.tag = ''
       },
-
-      // 把多个标签分割成数组
-      trim (str) {
-        let tagArr = []
-        if (str) {
-          tagArr = str.replace(/(^\s*)|(\s*$)|(,$)/g, '').split(',')
-        } else {
-          tagArr.push('Default')
+      //文章标签开始
+      handleClose(tag) {
+        this.article.articleTag.splice(this.article.articleTag.indexOf(tag), 1);
+      },
+      showInput() {
+        this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        });
+      },
+      handleInputConfirm() {
+        let inputValue = this.inputValue;
+        if (inputValue) {
+          this.article.articleTag.push(inputValue);
         }
-        return tagArr
-      },
-
-      // 选择已有标签
-      chooseTag (item) {
-        this.tag = this.tag + item.tag + ','
+        this.inputVisible = false;
+        this.inputValue = '';
       }
+      //文章标签结束
     },
     components: {
       TopEditor
     }
   }
 </script>
+<style scoped lang="scss">
+  .el-tag {
+    margin-right: 10px;
+  }
+
+  .el-tag + .el-tag {
+    margin-right: 10px;
+  }
+
+  .button-new-tag {
+    margin-right: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .input-new-tag {
+    width: 90px;
+    margin-right: 10px;
+    vertical-align: bottom;
+  }
+</style>
