@@ -88,6 +88,7 @@
       handleCommand(command){
         if(command=="logout"){
           this.$store.dispatch('logout')
+          this.$router.push('/')
         }else{
           this.$router.push('/'+command)
         }

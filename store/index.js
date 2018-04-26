@@ -255,5 +255,7 @@ export const actions = {
   },
   logout({commit}) {
     commit('login/SET_USER', null)
+    Service.post('/logout').then(response => {
+    })
   }
 }
