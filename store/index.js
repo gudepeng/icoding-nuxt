@@ -19,7 +19,7 @@ export const actions = {
         console.log(response.status + "     " + response.data + "     " + response.data.status)
         const success = !!response.status && response.data && Object.is(response.data.status, 0)
         console.log("success:" + success + "      " + response.data)
-        if (success) commit('login/SET_USER', response.data)
+        if (success) commit('login/SET_USER', response.data.result)
       }, err => {
       })
   },
@@ -49,7 +49,6 @@ export const actions = {
         commit('tag/GET_LIST_FAILURE', err)
       })
   },
-
   // 获取分类列表
   loadCategories({commit}, params = {per_page: 100}) {
     commit('category/REQUEST_LIST')
@@ -63,7 +62,6 @@ export const actions = {
         commit('category/GET_LIST_FAILURE', err)
       })
   },
-
   // 获取最热文章列表
   loadHotArticles({commit}) {
     commit('article/REQUEST_HOT_LIST')
@@ -115,47 +113,6 @@ export const actions = {
       }, err => {
         commit('comment/POST_ITEM_FAILURE', err)
         return Promise.reject(err)
-      })
-  },
-
-  // 喜欢某个页面或主站 || 为某条回复点赞
-  likeArticleOrPageOrComment({commit}, like) {
-    return Service.post('/like', like)
-      .then(response => {
-        const success = !!response.status && response.data && Object.is(response.data.code, 1)
-        if (success) {
-          let mutation
-          switch (like.type) {
-            case 1:
-              mutation = 'comment/LIKE_ITEM'
-              break
-            case 2:
-              mutation = Object.is(like.id, 0) ? 'option/LIKE_SITE' : 'article/LIKE_ARTICLE'
-              break
-            default:
-              break
-          }
-          commit(mutation, like)
-          return Promise.resolve(response.data)
-        } else {
-          return Promise.reject(response.data)
-        }
-      }, err => {
-        return Promise.reject(err)
-      })
-  },
-  // 获取地图文章列表
-  loadSitemapArticles({commit}, params = {page: 1}) {
-    commit('sitemap/REQUEST_ARTICLES')
-    return Service.get('/article', {params})
-      .then(response => {
-        const success = !!response.status && response.data && Object.is(response.data.code, 1)
-        const commitName = `sitemap/GET_ARTICLES_SUCCESS`
-        if (success) commit(commitName, response.data)
-        if (!success) commit('sitemap/GET_ARTICLES_FAILURE')
-      })
-      .catch(err => {
-        commit('sitemap/GET_ARTICLES_FAILURE', err)
       })
   },
   // 获取文章列表
@@ -257,5 +214,19 @@ export const actions = {
     commit('login/SET_USER', null)
     Service.post('/logout').then(response => {
     })
+  },
+  likearticle({commit}, params){
+    Service.put('/like/' + params.id)
+      .then(function (response) {
+        commit('article/LIKE_ARTICLE', params)
+      }, function (err) {
+      })
+  },
+  unlikearticle({commit}, params){
+    Service.delete('/like/' + params.id)
+      .then(function (response) {
+        commit('article/UNLIKE_ARTICLE', params)
+      }, function (err) {
+      })
   }
 }

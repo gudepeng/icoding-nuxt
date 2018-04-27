@@ -34,10 +34,10 @@ export const mutations = {
   // List
   CLEAR_LIST(state) {
     state.list.data = {
-        page: {
-          currentPage: 0
-        },
-        data: []
+      page: {
+        currentPage: 0
+      },
+      data: []
     }
   },
   REQUEST_LIST(state) {
@@ -83,10 +83,12 @@ export const mutations = {
   },
   // 喜欢某篇文章
   LIKE_ARTICLE(state, action) {
-    let article = state.detail.data
-    if (Object.is(article.id, action.id)) {
-      state.detail.data.meta.likes ++
-    }
+    state.list.data.data[action.keyindex].likeId = action.userid
+    state.list.data.data[action.keyindex].articleLike = state.list.data.data[action.keyindex].articleLike+1
+  },
+  UNLIKE_ARTICLE(state, action) {
+    state.list.data.data[action.keyindex].likeId = null
+    state.list.data.data[action.keyindex].articleLike = state.list.data.data[action.keyindex].articleLike-1
   },
   //保存文章
   PUBLISH_ARTICLE_FAILURE(state) {
