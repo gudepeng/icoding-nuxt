@@ -4,6 +4,7 @@
       <div class="item-body">
         <h4 class="item-title">
           <router-link :to="`/article/${item.articleId}`" :title="item.articleTitle">{{ item.articleTitle }}
+
           </router-link>
         </h4>
         <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.articleSummary"></p>
@@ -60,13 +61,17 @@
     methods: {
       likearticle(id) {
         if (this.$store.state.login.authUser != null) {
-          this.$store.dispatch('likearticle', {"id":id,"keyindex":this.keyindex,"userid":this.$store.state.login.authUser.userId})
+          this.$store.dispatch('likearticle', {
+            "id": id,
+            "keyindex": this.keyindex,
+            "userid": this.$store.state.login.authUser.userId
+          })
         } else {
           this.$store.dispatch('SHOWLONGINTYPE', 0)
         }
       },
       unlikearticle(id) {
-        this.$store.dispatch('unlikearticle',{"id":id,"keyindex":this.keyindex})
+        this.$store.dispatch('unlikearticle', {"id": id, "keyindex": this.keyindex})
       },
       formatArticleType(type) {
         let articlevalue = "未知"
@@ -95,37 +100,29 @@
   .article-list-item {
     margin-bottom: 1em;
     background-color: $module-bg;
-
     &:last-child {
       margin: 0;
     }
-
     &:hover {
       background-color: $module-hover-bg;
       box-shadow: 0 1px 3px 0 rgba(0, 34, 77, .1);
     }
-
     > .item-content {
       display: block;
       overflow: hidden;
-
       &:hover {
-
         > .item-thumb {
-
           .item-thumb-img {
             @include css3-prefix(opacity, .95);
             @include css3-prefix(transform, translateX(-.5em));
           }
         }
       }
-
       > .item-thumb {
         float: left;
         width: 12em;
         height: 8.5em;
         overflow: hidden;
-
         .item-thumb-img {
           min-width: 100%;
           width: calc(100% + .5em);
@@ -138,11 +135,9 @@
           @include css3-prefix(transform, translateX(0));
         }
       }
-
       > .item-body {
         float: left;
         padding: 16px 25px;
-
         > .item-title {
           font-size: 1.2em;
           font-weight: 600;
@@ -152,10 +147,8 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-
           > a {
             margin-left: 0;
-
             &:hover {
               display: inline-block;
               text-decoration: underline;
@@ -163,7 +156,6 @@
             }
           }
         }
-
         > .item-description {
           font-size: 1em;
           margin: 0;
@@ -174,7 +166,6 @@
           text-overflow: ellipsis;
           @include clamp(3);
         }
-
         > .item-meta {
           font-size: .9em;
           height: 2em;
@@ -187,16 +178,13 @@
           text-overflow: ellipsis;
           word-wrap: normal;
           color: #8590a6;
-
           > .views {
             min-width: 4rem;
           }
-
           > .likes,
           > .comments {
             min-width: 3em;
           }
-
           > .date,
           > .views,
           > .comments,
@@ -210,37 +198,29 @@
               margin-right: .4em;
             }
           }
-
           > .tags,
           > .categories {
-
             a {
               text-transform: capitalize;
               margin-right: .5em;
             }
           }
-
           > .tags {
             margin-right: 0;
           }
         }
       }
-
       &.mobile {
         height: auto;
-
         > .item-body {
           width: 100%;
           height: auto;
-
           > .item-description {
             height: auto;
             margin-bottom: .5em;
           }
-
           > .item-meta {
             justify-content: space-between;
-
             > .date,
             > .views,
             > .comments,
