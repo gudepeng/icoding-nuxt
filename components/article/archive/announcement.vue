@@ -2,7 +2,7 @@
   <div class="announcement">
     <div>
       <span :class="{click:clickT==null}" @click="clickType(null)">推荐</span>
-      <span :class="{click:clickT==key}" v-for="(articleType) in articleTypes" @click="clickType(articleType.value)">{{articleType.label}}</span>
+      <span :class="{click:clickT==articleType.value}" v-for="(articleType) in articleTypes" @click="clickType(articleType.value)">{{articleType.label}}</span>
     </div>
   </div>
 </template>

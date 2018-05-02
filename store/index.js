@@ -130,6 +130,18 @@ export const actions = {
         commit('article/GET_LIST_FAILURE', err)
       })
   },
+  // 获取我的文章列表
+  loadSelfOrLikeArticles({commit}, params) {
+    return Service.get('/article/self/'+params.type, {params})
+      .then(response => {
+        const success = !!response.status && response.data && Object.is(response.data.status, 0)
+        const isFirstPage = params.currentPage && params.currentPage > 1
+        const commitName = `article/${isFirstPage ? 'ADD' : 'GET'}_${params.type}_LIST_SUCCESS`
+        if (success) commit(commitName, response.data)
+      })
+      .catch(err => {
+      })
+  },
   // 获取文章详情
   loadArticleDetail({commit}, params = {}) {
     commit('article/REQUEST_DETAIL')

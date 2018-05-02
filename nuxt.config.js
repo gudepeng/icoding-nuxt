@@ -65,7 +65,7 @@ module.exports = {
   ],
   generate: {
     routes: function () {
-      return axios.get('http://127.0.0.1:8081/api/article', {currentPage: 1, pageNumber: 10000})
+      return axios.get('http://39.106.214.109:8081/api/article', {currentPage: 1, pageNumber: 10000})
         .then(res => {
           return res.data.result.data.map((article) => {
             return '/article/' + article.articleId

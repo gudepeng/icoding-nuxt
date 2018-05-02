@@ -66,8 +66,8 @@
         preload: false,
       }
     },
-    mounted: function () {
-      this.$store.dispatch('loadAdminInfo')
+    async mounted() {
+      await this.$store.dispatch('loadAdminInfo')
     },
     computed: {
       userInfo() {

@@ -26,10 +26,27 @@ export const state = () => {
     publish: {
       posting: false,
       data: {}
+    },
+    self: {
+      fetching: false,
+      data: {
+        page: {
+          currentPage: 0
+        },
+        data: []
+      }
+    },
+    selflike: {
+      fetching: false,
+      data: {
+        page: {
+          currentPage: 0
+        },
+        data: []
+      }
     }
   }
 }
-
 export const mutations = {
   // List
   CLEAR_LIST(state) {
@@ -66,6 +83,28 @@ export const mutations = {
     state.hot.fetching = false
     state.hot.data = action.result
   },
+  // Self
+  REQUEST_SELF_LIST(state) {
+    state.self.fetching = true
+  },
+  GET_SELF_LIST_FAILURE(state) {
+    state.self.fetching = false
+  },
+  GET_SELF_LIST_SUCCESS(state, action){
+    state.self.fetching = false
+    state.self.data = action.result
+  },
+  // SelfLike
+  REQUEST_SELFLIKE_LIST(state) {
+    state.selflike.fetching = true
+  },
+  GET_SELFLIKE_LIST_FAILURE(state) {
+    state.selflike.fetching = false
+  },
+  GET_SELFLIKE_LIST_SUCCESS(state, action){
+    state.selflike.fetching = false
+    state.selflike.data = action.result
+  },
   // Detail
   CLEAR_DETAIL(state) {
     state.detail.data = {}
@@ -84,11 +123,11 @@ export const mutations = {
   // 喜欢某篇文章
   LIKE_ARTICLE(state, action) {
     state.list.data.data[action.keyindex].likeId = action.userid
-    state.list.data.data[action.keyindex].articleLike = state.list.data.data[action.keyindex].articleLike+1
+    state.list.data.data[action.keyindex].articleLike = state.list.data.data[action.keyindex].articleLike + 1
   },
   UNLIKE_ARTICLE(state, action) {
     state.list.data.data[action.keyindex].likeId = null
-    state.list.data.data[action.keyindex].articleLike = state.list.data.data[action.keyindex].articleLike-1
+    state.list.data.data[action.keyindex].articleLike = state.list.data.data[action.keyindex].articleLike - 1
   },
   //保存文章
   PUBLISH_ARTICLE_FAILURE(state) {

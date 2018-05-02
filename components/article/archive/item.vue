@@ -1,45 +1,43 @@
 <template>
   <div class="article-list-item" @click="toDetail">
-    <div class="item-content" :class="{ mobile: mobileLayout }">
-      <div class="item-body">
-        <h4 class="item-title">
-          <router-link :to="`/article/${item.articleId}`" :title="item.articleTitle">{{ item.articleTitle }}
-
-          </router-link>
-        </h4>
-        <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.articleSummary"></p>
-        <div class="item-meta">
+      <div @click="$router.push(`/article/${item.articleId}`)" class="item-content" :class="{ mobile: mobileLayout }">
+        <div class="item-body">
+          <h4 class="item-title" :title="item.articleTitle">
+            {{ item.articleTitle }}
+          </h4>
+          <p class="item-description" style="-webkit-box-orient: vertical;" v-html="item.articleSummary"></p>
+          <div class="item-meta">
           <span class="date">
             <i class="iconfont icon-clock"></i>
             <span>{{ item.articleTime | toYMD }}</span>
           </span>
-          <span class="views">
+            <span class="views">
             <i class="iconfont icon-eye"></i>
             <span>{{ item.articleClick || 0 }}</span>
           </span>
-          <span class="comments">
+            <span class="comments">
             <i class="iconfont icon-comment"></i>
             <span>{{ item.articleComment || 0 }}</span>
           </span>
-          <template v-if="item.likeId==null">
-            <span @click="likearticle(item.articleId)" class="likes">
+            <template v-if="item.likeId==null">
+            <span @click.stop="likearticle(item.articleId)" class="likes">
               <i class="iconfont icon-like"></i>
               <span>{{ item.articleLike || 0 }}</span>
             </span>
-          </template>
-          <template v-else>
-            <span @click="unlikearticle(item.articleId)" class="likes">
+            </template>
+            <template v-else>
+            <span @click.stop="unlikearticle(item.articleId)" class="likes">
               <i class="iconfont icon-like-on"></i>
               <span>{{ item.articleLike || 0 }}</span>
             </span>
-          </template>
-          <span v-if="clicktype==null" class="iconfont categories">
+            </template>
+            <span v-if="clicktype==null" class="iconfont categories">
             <i class="iconfont icon-list"></i>
             <span>{{formatArticleType(item.sortId)}}</span>
           </span>
+          </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -108,6 +106,7 @@
       box-shadow: 0 1px 3px 0 rgba(0, 34, 77, .1);
     }
     > .item-content {
+      cursor: pointer;
       display: block;
       overflow: hidden;
       &:hover {

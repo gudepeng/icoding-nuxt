@@ -9,7 +9,7 @@
       </a>
     </div>
     <div class="article_list">
-      <div v-for="(item,index) in articles.data.data" :key="index" v-show="clickT==0">
+      <div v-for="(item,index) in selfarticles.data.data" :key="index" v-show="clickT==0">
         <div class="title">
           <nuxt-link :to="`/article/${item.articleId}`">{{ item.articleTitle }}</nuxt-link>
         </div>
@@ -17,8 +17,13 @@
           {{item.articleTime | toYMD}}
         </div>
       </div>
-      <div v-show="clickT==1">
-
+      <div v-for="(item,index) in selflikearticles.data.data" :key="index" v-show="clickT==1">
+        <div class="title">
+          <nuxt-link :to="`/article/${item.articleId}`">{{ item.articleTitle }}</nuxt-link>
+        </div>
+        <div class="time">
+          {{item.articleTime | toYMD}}
+        </div>
       </div>
     </div>
     <!-- 加载更多 -->
@@ -34,21 +39,21 @@
 <script>
   export default {
     name: 'Admin',
-    layout: 'mycenter',
     data() {
       return {
         clickT: 0,
       }
     },
-    fetch ({redirect, store}) {
-    },
     async mounted () {
-      // 后台无需做ssr, 所以在mounted获取数据
-      await this.$store.dispatch('loadArticles', { currentPage: 1, sortId: null, userId: JSON.parse(localStorage.getItem("userInfo")).data.principal.userId})
+      await this.$store.dispatch('loadSelfOrLikeArticles', {currentPage: 1, type: "SELF"})
+      await this.$store.dispatch('loadSelfOrLikeArticles', {currentPage: 1, type: "SELFLIKE"})
     },
     computed: {
-      articles () {
-        return this.$store.state.article.list
+      selfarticles () {
+        return this.$store.state.article.self
+      },
+      selflikearticles(){
+        return this.$store.state.article.selflike
       },
       maxPage () {
         return 1

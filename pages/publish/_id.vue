@@ -104,9 +104,9 @@
       }
     },
     methods: {
-      async publish (state) {
-        let art = this.article
-        art.articleTag = this.article.articleTag.join(",");
+      async publish () {
+        let art = Object.create(this.article)
+        art.articleTag = art.articleTag.join(",")
         await this.$store.dispatch('PUBLISH_ARTICLE', this.article)
         if (this.$store.state.article.publish.data.status === 0) {
           this.publishTip = '发布成功';
