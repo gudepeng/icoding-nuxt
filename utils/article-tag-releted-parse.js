@@ -12,10 +12,10 @@ export default (text, tags) => {
   }
 
   // 初始化标签数据（本身、全小写、全大写、首字母大写）
-  const selfTags = tags.map(t => t.name)
-  const lowerCaseTags = tags.map(t => t.name.toLowerCase())
-  const upperCaseTags = tags.map(t => t.name.toUpperCase())
-  const firstUpperCaseTags = tags.map(t => firstUpperCase(t.name))
+  const selfTags = tags.map(t => t)
+  const lowerCaseTags = tags.map(t => t.toLowerCase())
+  const upperCaseTags = tags.map(t => t.toUpperCase())
+  const firstUpperCaseTags = tags.map(t => firstUpperCase(t))
 
   // 构造正则
   const tagNames = Array.from(new Set([...selfTags, ...lowerCaseTags, ...upperCaseTags, ...firstUpperCaseTags]))
@@ -31,10 +31,10 @@ export default (text, tags) => {
   return text.replace(tagReg, tag => {
     // 找到本身为自身、大写为自身、小写为自身、首字母大写为自身
     const findedTag = tags.find(t => {
-      return Object.is(t.name, tag) || 
-             Object.is(t.name.toLowerCase(), tag) || 
-             Object.is(t.name.toUpperCase(), tag) || 
-             Object.is(firstUpperCase(t.name), tag)
+      return Object.is(t, tag) ||
+             Object.is(t.toLowerCase(), tag) ||
+             Object.is(t.toUpperCase(), tag) ||
+             Object.is(firstUpperCase(t), tag)
     })
     if (!findedTag) return tag
     // 如果找到匹配的，但是text文字首字符为#，则证明是外站连接，则不解析

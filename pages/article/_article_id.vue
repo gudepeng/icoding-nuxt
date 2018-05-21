@@ -89,10 +89,10 @@
 
   export default {
     name: 'article-detail',
-    validate ({ params }) {
+    validate ({params}) {
       return (!!params.article_id && !Object.is(Number(params.article_id), NaN))
     },
-    fetch ({ store, params }) {
+    fetch ({store, params}) {
       return store.dispatch('loadArticleDetail', params)
     },
     head() {
@@ -100,11 +100,12 @@
       return {
         title: article.articleTitle || 'No Result Data.',
         meta: [
-          { hid: 'keywords',
+          {
+            hid: 'keywords',
             name: 'keywords',
             content: (article.keywords ? article.keywords.join(',') : article.title) || ''
           },
-          { hid: 'description', name: 'description', content: article.description }
+          {hid: 'description', name: 'description', content: article.description}
         ]
       }
     },
@@ -112,11 +113,11 @@
       return {
         swiperOption: {
           autoplay: 3500,
-          setWrapperSize :true,
-          mousewheelControl : true,
+          setWrapperSize: true,
+          mousewheelControl: true,
           autoplayDisableOnInteraction: false,
-          observeParents:true,
-          grabCursor : true,
+          observeParents: true,
+          grabCursor: true,
           slidesPerView: 'auto',
           spaceBetween: 14
         },
@@ -128,8 +129,7 @@
     mounted() {
       this.clipboard()
     },
-    components: {
-    },
+    components: {},
     computed: {
       article() {
         return this.$store.state.article.detail.data
@@ -137,7 +137,7 @@
       articleContent() {
         let content = this.article.articleContent
         if (!content) return ''
-        const hasTags = Object.is(this.tags.code, 1) && !!this.tags.data.length
+        let tags = this.article.articleTag.split(",")
         if (content.length > 13688 && !this.fullContentEd) {
           this.canReadMore = true
           let shortContent = content.substring(0, 11688)
@@ -146,12 +146,11 @@
           let lastCodeIndex = shortContent.lastIndexOf('\n\n```')
           let lastLineIndex = shortContent.lastIndexOf('\n\n**')
           let lastReadindex = Math.max(lastH4Index, lastH3Index, lastCodeIndex, lastLineIndex);
-          console.log(lastH4Index, lastH3Index, lastCodeIndex, lastLineIndex, 'min', lastReadindex)
           shortContent = shortContent.substring(0, lastReadindex)
-          return marked(shortContent, hasTags ? this.tags.data : false, true)
+          return marked(shortContent, tags , true)
         } else {
           this.canReadMore = false
-          return marked(content, hasTags ? this.tags.data : false, true)
+          return marked(content, tags, true)
         }
       },
       fetching() {
@@ -207,31 +206,25 @@
 <style lang="scss">
   @import '~assets/sass/mixins';
   @import '~assets/sass/variables';
+
   .article {
-
     &.mobile {
-
       > .metas {
         padding: 1em;
         line-height: 2.3em;
-
         > .item {
           margin: 0;
         }
       }
-
       > .related {
         height: auto;
-
         > .article-list {
           padding: 0;
           margin: 0;
           list-style: none;
           overflow: hidden;
           opacity: .9;
-
           > .item {
-
             > .item-link {
               display: block;
               width: 100%;
@@ -242,14 +235,10 @@
           }
         }
       }
-
       > .detail {
-
         > .content {
-
           pre {
             padding-left: 0;
-
             > .code-lines {
               display: none;
             }
@@ -257,44 +246,35 @@
         }
       }
     }
-
     > .detail,
     > .metas,
     > .related {
       margin-bottom: 1em;
       background-color: $module-bg;
     }
-
     > .detail {
       padding: 1em 2em;
-
       > .title {
         text-align: center;
         margin: 1em 0 1.5em 0;
         font-weight: 700;
       }
-
       > .content {
-
         iframe {
           width: 100%;
           margin-bottom: 1em;
           background-color: black;
         }
-
         a {
           font-weight: bold;
           margin: 0 .1em;
-
           &.image-link {
             margin: 0;
           }
-
           &:hover {
             text-decoration: underline;
           }
         }
-
         img {
           max-width: 100%;
           margin: 0 auto;
@@ -305,27 +285,22 @@
           transition: all .25s;
           opacity: .9;
           cursor: pointer;
-
           &:hover {
             opacity: 1;
             transition: all .25s;
           }
         }
-
         p {
           line-height: 2.2em;
           text-indent: 2em;
           margin-bottom: 1em;
-
           &.text-center {
             text-align: center;
           }
-
           &.text-right {
             text-align: right;
           }
         }
-
         h1,
         h2,
         h3,
@@ -338,45 +313,34 @@
           font-weight: 700;
           text-indent: 0;
         }
-
         blockquote {
-
           p {
             // text-indent: 0em;
-
             &:last-child {
               margin-bottom: 0;
             }
           }
         }
-
         ul {
           list-style-type: square;
         }
-
         ul, ol {
-
           > li {
             line-height: 1.8em;
             padding: .5em .8em;
-
             &:hover {
-              background-color: rgba(230, 230, 230, 0.7);
+              background-color: $module-hover-bg;
             }
-
             > p {
               text-indent: 0;
             }
-
             > ul {
-
               &:last-child {
                 margin-bottom: 0;
               }
             }
           }
         }
-
         code {
           color: #bd4147;
           padding: .3em .5em;
@@ -384,7 +348,6 @@
           border-radius: $radius;
           background-color: $module-hover-bg;
         }
-
         pre {
           display: block;
           position: relative;
@@ -392,10 +355,9 @@
           margin-bottom: 1em;
           padding-left: 2.5em;
           background-color: rgba(0, 0, 0, 0.8);
-
           &:before {
             color: white;
-            content: attr(data-lang)" CODE";
+            content: attr(data-lang) " CODE";
             height: 2.8em;
             line-height: 2.8em;
             font-size: 1em;
@@ -409,7 +371,6 @@
             text-transform: uppercase;
             text-align: center;
           }
-
           > .code-lines {
             position: absolute;
             left: 0;
@@ -420,14 +381,12 @@
             height: calc(100% - 2.8em);
             text-align: center;
             background-color: rgba(0, 0, 0, 0.2);
-
             > .code-line-number {
               padding: 0;
               position: relative;
               list-style-type: none;
               line-height: 1.6em;
               transition: background-color .05s;
-
               &:hover {
                 &:before {
                   display: block;
@@ -435,7 +394,6 @@
                   visibility: visible;
                 }
               }
-
               &:before {
                 content: '';
                 height: 1.6em;
@@ -450,7 +408,6 @@
               }
             }
           }
-
           > code {
             margin: 0;
             padding: 1em;
@@ -464,7 +421,6 @@
           }
         }
       }
-
       @keyframes readmorebtn {
         0% {
           transform: translate3d(0, 0, 0);
@@ -489,13 +445,11 @@
           background-color: $module-hover-bg;
         }
       }
-
       > .readmore {
         width: 100%;
         display: flex;
         justify-content: center;
         margin-bottom: .8rem;
-
         > .readmore-btn {
           width: 80%;
           text-align: center;
@@ -503,67 +457,54 @@
           line-height: 3rem;
           background-color: $module-hover-bg;
           animation: readmorebtn 4s linear infinite;
-
           &[disabled] {
             cursor: no-drop;
           }
-
           &:hover {
-            background-color: $primary!important;
-            color: white!important;
+            background-color: $primary !important;
+            color: white !important;
           }
-
           > .iconfont {
             margin-left: .5rem;
           }
         }
       }
     }
-
     .article-share {
       padding: .8em;
       margin-bottom: 1em;
       background-color: $module-bg;
-
+      > .share-box {
+      }
     }
-
     > .metas {
       padding: 1em 1.5em;
-
       > .item {
-
         a:hover {
           text-decoration: underline;
         }
-
         .site-url {
           text-decoration: underline;
           cursor: pointer;
           color: $link-color;
-
           &:hover {
             color: $link-hover-color;
           }
         }
       }
     }
-
     > .related {
       padding: 1em 0;
       border-width: 0 1em;
       border-color: transparent;
       overflow: hidden;
       height: 10em;
-
       > .swiper.article-list {
-
         > .swiper-wrapper {
           height: 8em;
           overflow: hidden;
-
           > .swiper-slide.item {
             width: auto;
-
             > .item-box {
               display: block;
               position: relative;
@@ -571,23 +512,19 @@
               width: auto;
               height: 100%;
               opacity: .8;
-
               &:hover {
-
                 .thumb {
                   opacity: 1;
                   @include css3-prefix(transform, scale(1.2) rotate(3deg));
                   @include css3-prefix(transition, all 1s);
                 }
               }
-
               > .thumb {
                 width: auto;
                 height: 100%;
                 @include css3-prefix(transform, scale(1) rotate(0deg));
                 @include css3-prefix(transition, all 1s);
               }
-
               > .title {
                 position: absolute;
                 bottom: 0;

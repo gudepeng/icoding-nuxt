@@ -18,7 +18,6 @@
           :disable-transitions="false"
           @close="handleClose(tag)">
           {{tag}}
-
         </el-tag>
         <el-input
           class="input-new-tag"
@@ -131,9 +130,10 @@
         if (!pd) {
           return
         }
-        let art = Object.create(this.article)
+        debugger
+        let art = JSON.parse(JSON.stringify(this.article))
         art.articleTag = art.articleTag.join(",")
-        await this.$store.dispatch('PUBLISH_ARTICLE', this.article)
+        await this.$store.dispatch('PUBLISH_ARTICLE', art)
         if (this.$store.state.article.publish.data.status === 0) {
           this.publishTip = '发布成功';
         }
