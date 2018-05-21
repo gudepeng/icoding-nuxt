@@ -1,16 +1,16 @@
 <template>
   <div>
-    <el-form ref="form" :model="article">
-      <el-form-item>
+    <el-form ref="form" :rules="rules" :model="article">
+      <el-form-item prop="articleTitle">
         <el-input v-model="article.articleTitle" placeholder="文章标题"></el-input>
       </el-form-item>
       <el-form-item>
         <el-input type="textarea" v-model="article.articleSummary" placeholder="文章摘要"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="articleContent">
         <top-editor v-model="article.articleContent" :upload="upload" :options="options"></top-editor>
       </el-form-item>
-      <el-form-item label="文章标签：">
+      <el-form-item label="文章标签：" prop="articleTag">
         <el-tag
           :key="tag"
           v-for="tag in article.articleTag"
@@ -18,6 +18,7 @@
           :disable-transitions="false"
           @close="handleClose(tag)">
           {{tag}}
+
         </el-tag>
         <el-input
           class="input-new-tag"
@@ -30,7 +31,7 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
       </el-form-item>
-      <el-form-item label="文章分类：">
+      <el-form-item label="文章分类：" prop="sortId">
         <el-select v-model="article.sortId" placeholder="请选择">
           <el-option
             v-for="item in articleType"
@@ -54,6 +55,20 @@
     layout: 'mycenter',
     data () {
       return {
+        rules: {
+          articleTitle: [
+            {required: true, message: '请输入文章标题', trigger: 'blur'},
+          ],
+          articleContent: [
+            {required: true, message: '请输入文章内容', trigger: 'blur'},
+          ],
+          articleTag: [
+            {required: true, message: '请输入文章标签', trigger: 'blur'},
+          ],
+          sortId: [
+            {required: true, message: '请选择文章类别', trigger: 'blur'},
+          ],
+        },
         article: {
           articleContent: "",
           articleSummary: "",
@@ -105,6 +120,17 @@
     },
     methods: {
       async publish () {
+        let pd = true
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+          } else {
+            pd = false
+            return false;
+          }
+        });
+        if (!pd) {
+          return
+        }
         let art = Object.create(this.article)
         art.articleTag = art.articleTag.join(",")
         await this.$store.dispatch('PUBLISH_ARTICLE', this.article)
