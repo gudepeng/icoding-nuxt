@@ -30,7 +30,7 @@
             <span>{{ buildDateTitle(article.articleTime) }}</span>
           </router-link>
           <span>&nbsp;发布在&nbsp;</span>
-          <span v-if="article.sortId">{{article.sortId}}</span>
+          <span v-if="article.sortId">{{article.sortId | artileValueToLable}}</span>
           <span v-if="!article.sortId">未知</span>
           <span>&nbsp;分类下，当前已被围观&nbsp;</span>
           <span>{{ article.articleClick || 0 }}</span>
@@ -49,20 +49,6 @@
         </p>
       </div>
     </transition>
-    <div class="related" v-if="article.related && article.related && !mobileLayout">
-      <div class="article-list swiper" v-swiper:swiper="swiperOption">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide item" v-for="(article, index) in article.related" :key="index">
-            <router-link :to="`/article/${article.id}`"
-                         :title="article.title"
-                         class="item-box">
-              <img :src="buildThumb(article.thumb)" class="thumb" :alt="article.articleTitle">
-              <span class="title">{{ article.articleTitle }}</span>
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="related" v-if="article.related && article.related && mobileLayout">
       <ul class="article-list">
         <li class="item" v-for="(article, index) in article.related.slice(0, 8)" :key="index">
@@ -111,16 +97,6 @@
     },
     data() {
       return {
-        swiperOption: {
-          autoplay: 3500,
-          setWrapperSize: true,
-          mousewheelControl: true,
-          autoplayDisableOnInteraction: false,
-          observeParents: true,
-          grabCursor: true,
-          slidesPerView: 'auto',
-          spaceBetween: 14
-        },
         canReadMore: false,
         fullContentEd: false,
         readMoreLoading: false
@@ -499,53 +475,6 @@
       border-color: transparent;
       overflow: hidden;
       height: 10em;
-      > .swiper.article-list {
-        > .swiper-wrapper {
-          height: 8em;
-          overflow: hidden;
-          > .swiper-slide.item {
-            width: auto;
-            > .item-box {
-              display: block;
-              position: relative;
-              overflow: hidden;
-              width: auto;
-              height: 100%;
-              opacity: .8;
-              &:hover {
-                .thumb {
-                  opacity: 1;
-                  @include css3-prefix(transform, scale(1.2) rotate(3deg));
-                  @include css3-prefix(transition, all 1s);
-                }
-              }
-              > .thumb {
-                width: auto;
-                height: 100%;
-                @include css3-prefix(transform, scale(1) rotate(0deg));
-                @include css3-prefix(transition, all 1s);
-              }
-              > .title {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: calc(100% - 1em);
-                height: 2em;
-                line-height: 2em;
-                background-color: rgba(165, 165, 165, 0.5);
-                padding: 0 .5em;
-                color: white;
-                opacity: .8;
-                font-size: .9em;
-                text-align: center;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-            }
-          }
-        }
-      }
     }
   }
 </style>

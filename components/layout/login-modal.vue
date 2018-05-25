@@ -44,10 +44,12 @@
               <div class="hint">第三方账号登录：</div>
               <div class="oauth">
                 <div class="oauth-bg">
-                  <img href="http://www.5icoding.top/api/auth/qq" title="微信" src="https://gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" class="oauth-btn">
+                  <a href="/api/auth/qq">
+                    <img title="QQ" src="https://gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" class="oauth-btn">
+                  </a>
                 </div>
                 <div class="oauth-bg">
-                  <a href="http://www.5icoding.top/api/auth/github" target="_blank">
+                  <a href="/api/auth/github">
                     <img title="GitHub" src="https://gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" class="oauth-btn">
                   </a>
                 </div>

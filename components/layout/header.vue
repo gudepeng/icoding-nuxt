@@ -152,6 +152,7 @@
             padding: 1em;
             &:hover {
               color: #000000;
+              cursor: pointer;
             }
           }
         }

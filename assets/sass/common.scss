@@ -1,26 +1,15 @@
-
-@font-face {
-  font-family: 'CenturyGothic';
-  src: url('/fonts/CenturyGothic.TTF');
-}
-
-@font-face {
-  font-family: 'DINRegular';
-  src: url('/fonts/DIN-Regular.ttf');
-}
-
 ::selection {
-    background: $primary; 
+    background: $primary;
     color: $white;
 }
 
 ::-moz-selection {
-    background: $primary; 
+    background: $primary;
     color: $white;
 }
 
 ::-webkit-selection {
-    background: $primary; 
+    background: $primary;
     color: $white;
 }
 
@@ -77,10 +66,10 @@
   z-index: 3;
 }
 
-input:-webkit-autofill, 
-textarea:-webkit-autofill, 
+input:-webkit-autofill,
+textarea:-webkit-autofill,
 select:-webkit-autofill {
-  box-shadow: 0 0 0px 1000px rgb(230, 230, 230) inset; 
+  box-shadow: 0 0 0px 1000px rgb(230, 230, 230) inset;
 }
 
 a {
@@ -125,7 +114,7 @@ a {
     &.shang {
       width: 30rem;
     }
-  }  
+  }
 
   &.display {
     opacity: 1;

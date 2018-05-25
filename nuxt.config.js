@@ -52,13 +52,11 @@ module.exports = {
   },
   plugins: [
     {src: '~/plugins/filters.js'},
-    {src: '~/plugins/swiper.js', ssr: false},
     {src: '~/plugins/vue-loading.js'},
     {src: '~/plugins/vue-empty.js'},
     {src: '~/plugins/element-ui.js'}
   ],
   css: [
-    'swiper/dist/css/swiper.css',
     'highlight.js/styles/ocean.css',
     {src: '~assets/sass/app.scss', lang: 'sass'},
     'element-ui/lib/theme-chalk/index.css'
