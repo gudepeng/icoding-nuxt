@@ -156,23 +156,6 @@ export const actions = {
         return Promise.reject(err)
       })
   },
-  // 获取开源项目列表
-  loadGithubRepositories({commit, state}) {
-    // 如果数据已存在，则直接返回Promise成功，并返回数据
-    if (state.project.repositories.data.length) {
-      return Promise.resolve(state.project.repositories.data)
-    }
-    // 不存在则请求新数据
-    commit('project/REQUEST_GUTHUB_REPOSITORIES')
-    return Service.get(`/github`)
-      .then(response => {
-        const success = !!response.status && response.data && Object.is(response.data.code, 1)
-        if (success) commit('project/REQUEST_GUTHUB_REPOSITORIES_SUCCESS', response.data)
-        if (!success) commit('project/REQUEST_GUTHUB_REPOSITORIES_FAILURE')
-      }, err => {
-        commit('project/REQUEST_GUTHUB_REPOSITORIES_FAILURE', err)
-      })
-  },
   //保存文章
   PUBLISH_ARTICLE({commit}, params) {
     // 如果数据已存在，则直接返回Promise成功，并返回数据
@@ -240,5 +223,28 @@ export const actions = {
         commit('article/UNLIKE_ARTICLE', params)
       }, function (err) {
       })
-  }
+  },
+  loadcomment({commit}, params){
+    return Service.get('/comment/' + params.topicType+"/"+params.id)
+      .then(response => {
+        const success = !!response.status && response.data && Object.is(response.data.status, 0)
+        if (success)  commit('commentreply/SET_COMMENT', response.data.result)
+      })
+      .catch(err => {
+      })
+  },
+  showloadreply({commit,state}, params){
+    if(state.commentreply.comments[params.index].showreplys){
+      commit('commentreply/HIDE_REPLY',params )
+    }else{
+      return Service.get('/reply', {params})
+        .then(response => {
+          const success = !!response.status && response.data && Object.is(response.data.status, 0)
+          params.data = response.data.result
+          if (success)  commit('commentreply/SHOW_REPLY',params )
+        })
+        .catch(err => {
+        })
+    }
+  },
 }

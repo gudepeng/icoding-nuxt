@@ -13,7 +13,7 @@
                 <textarea style="width:100%;height:100%;resize: none;" v-model="article.articleContent"></textarea>
               </el-col>
               <el-col :span="12" style="height: 600px;overflow-y:scroll">
-                <div style="width:100%;height: 100%;word-break: break-all;" v-html="articleContentShow"></div>
+                <div style="width:100%;height: 100%;word-break: break-all;background: #ddd" v-html="articleContentShow"></div>
               </el-col>
             </el-row>
       </el-form-item>

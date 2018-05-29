@@ -19,7 +19,6 @@
         </div>
       </transition>
     </div>
-
     <transition name="module" mode="out-in">
       <div class="metas" v-if="!fetching && article.articleTitle">
         <p class="item">
@@ -49,22 +48,55 @@
         </p>
       </div>
     </transition>
-    <div class="related" v-if="article.related && article.related && mobileLayout">
-      <ul class="article-list">
-        <li class="item" v-for="(article, index) in article.related.slice(0, 8)" :key="index">
-          <router-link :to="`/article/${article.id}`"
-                       :title="article.title + '- [ 继续阅读 ]'"
-                       class="item-link">
-            <span class="title">《{{ article.title }}》- [ 继续阅读 ]</span>
-          </router-link>
+    <div class="comments">
+      <div>
+        <div>评论</div>
+        <div>
+          <textarea></textarea>
+        </div>
+      </div>
+      <ul>
+        <li v-for="(comment,index) in comments">
+          <div>
+            <div class="user">
+              <img src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
+            </div>
+            <div class="comment">
+              <div>
+                <span>{{comment.fromUserId}}</span>
+              </div>
+              <div>
+                <span>{{comment.commentContent}}</span>
+              </div>
+              <div>
+                <span @click="showReply(comment.commentId,index)">
+                  <i class="iconfont icon-comment"></i>
+                  <span>{{comment.commentReply}}条评论</span>
+                </span>
+                <span>{{comment.commentTime | timeAgo}}</span>
+              </div>
+              <div class="reply" v-show="comment.showreplys">
+                <div v-for="reply in comment.replys">
+                  <div class="user">
+                    <img src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
+                  </div>
+                  <div class="comment">
+                    <div>
+                      <span>{{reply.fromUserId}}</span>
+                    </div>
+                    <div>
+                      <span v-show="reply.replyType=='reply'">回复：{{reply.toUserId}}  </span><span>{{reply.replyContent}}</span>
+                    </div>
+                    <div>
+                      <span>{{reply.replyTime | timeAgo}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
       </ul>
-    </div>
-    <div class="comment">
-      <comment-box :post-id="article.id"
-                   :likes="article.meta.likes"
-                   v-if="!fetching && article.title">
-      </comment-box>
     </div>
   </div>
 </template>
@@ -79,7 +111,7 @@
       return (!!params.article_id && !Object.is(Number(params.article_id), NaN))
     },
     fetch ({store, params}) {
-      return store.dispatch('loadArticleDetail', params)
+        return store.dispatch('loadArticleDetail', params)
     },
     head() {
       const article = this.article
@@ -99,10 +131,11 @@
       return {
         canReadMore: false,
         fullContentEd: false,
-        readMoreLoading: false
+        readMoreLoading: false,
       }
     },
     mounted() {
+      this.$store.dispatch('loadcomment', {id: this.article.articleId, topicType: "article"})
       this.clipboard()
     },
     components: {},
@@ -123,7 +156,7 @@
           let lastLineIndex = shortContent.lastIndexOf('\n\n**')
           let lastReadindex = Math.max(lastH4Index, lastH3Index, lastCodeIndex, lastLineIndex);
           shortContent = shortContent.substring(0, lastReadindex)
-          return marked(shortContent, tags , true)
+          return marked(shortContent, tags, true)
         } else {
           this.canReadMore = false
           return marked(content, tags, true)
@@ -140,6 +173,9 @@
       },
       imgExt() {
         return this.$store.state.option.imgExt
+      },
+      comments(){
+        return this.$store.state.commentreply.comments
       }
     },
     methods: {
@@ -174,6 +210,10 @@
         month = Object.is(month.length, 1) ? `0${month}` : month
         day = Object.is(day.length, 1) ? `0${day}` : day
         return `/date/${year}-${month}-${day}`
+      },
+      showReply(commentid,index){
+        this.$store.dispatch('showloadreply', {commentId: commentid, index: index})
+
       }
     }
   }
@@ -450,8 +490,6 @@
       padding: .8em;
       margin-bottom: 1em;
       background-color: $module-bg;
-      > .share-box {
-      }
     }
     > .metas {
       padding: 1em 1.5em;
@@ -475,6 +513,88 @@
       border-color: transparent;
       overflow: hidden;
       height: 10em;
+    }
+    > .comments {
+      padding: .8em;
+      margin-bottom: 1em;
+      background-color: $module-bg;
+      > ul {
+        list-style-type: none;
+        padding: 0em;
+        margin: 0em;
+        display: block;
+
+        > li {
+          position: relative;
+          padding-top: 1em;
+          padding-bottom: 1em;
+          border-top: 1px solid #f5f5f5;
+
+          > div {
+              width: 100%;
+              display: flex;
+              > .user {
+                float: left;
+                height: 100%;
+                width: 3.5em;
+                > img {
+                  width: 3em;
+                  height: 3em;
+                }
+              }
+              > .comment {
+                flex: 1 1 auto;
+                float: left;
+                margin-left: 1em;
+                height: 100%;
+                > div{
+                  > span{
+                    > i{
+                      margin-right: .4em;
+                    }
+                    margin-right: 1em;
+                    line-height: 1.7;
+                    color: #333;
+                  }
+                }
+                > .reply{
+                  > div {
+                    width: 100%;
+                    display: flex;
+                    > .user {
+                      float: left;
+                      height: 100%;
+                      width: 3.5em;
+                      > img {
+                        width: 3em;
+                        height: 3em;
+                      }
+                    }
+                    > .comment {
+                      flex: 1 1 auto;
+                      float: left;
+                      margin-left: 1em;
+                      height: 100%;
+                      > div{
+                        > span{
+                          > i{
+                            margin-right: .4em;
+                          }
+                          margin-right: 1em;
+                          line-height: 1.7;
+                          color: #333;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        }
+        > li:first-child {
+          border-top: none;
+        }
+      }
     }
   }
 </style>
