@@ -247,4 +247,13 @@ export const actions = {
         })
     }
   },
+  comitcomment({commit}, params){
+      return Service.put('/comment', params)
+        .then(response => {
+          const success = !!response.status && response.data && Object.is(response.data.status, 0)
+          if (success)  commit('commentreply/ADD_SHOW_REPLY',response.data.result )
+        })
+        .catch(err => {
+        })
+    }
 }

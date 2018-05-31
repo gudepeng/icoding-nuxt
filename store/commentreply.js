@@ -25,5 +25,9 @@ export const mutations = {
   HIDE_REPLY(state, action){
     state.comments[action.index].showreplys = false
     state.comments=JSON.parse(JSON.stringify(state.comments))
-  }
+  },
+  ADD_SHOW_REPLY(state, action){
+    state.comments.unshift(action)
+    state.comments=JSON.parse(JSON.stringify(state.comments))
+  },
 }

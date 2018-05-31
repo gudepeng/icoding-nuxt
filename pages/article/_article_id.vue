@@ -49,10 +49,23 @@
       </div>
     </transition>
     <div class="comments">
-      <div>
-        <div>评论</div>
-        <div>
-          <textarea></textarea>
+      <div class="commentself">
+        <div class="title">
+          <span>评论</span>
+        </div>
+        <div class="yourcomment" v-show="userInfo!=null">
+          <div>
+            <div class="yourimg">
+              <img src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
+            </div>
+            <el-input v-model="yourcommentContent" :autosize="{ minRows: 2, maxRows: 50}" type="textarea" placeholder="说说你的看法"></el-input>
+          </div>
+          <div>
+            <el-button type="primary" @click="comitcomment" round>评论</el-button>
+          </div>
+        </div>
+        <div class="yourcomment" v-show="userInfo==null">
+          <el-button type="primary" @click="login" round style="margin-left: 27em;margin-right: .5em">登录</el-button>说说你的看法
         </div>
       </div>
       <ul>
@@ -69,7 +82,7 @@
                 <span>{{comment.commentContent}}</span>
               </div>
               <div>
-                <span @click="showReply(comment.commentId,index)">
+                <span class="hf" @click="showReply(comment.commentId,index)">
                   <i class="iconfont icon-comment"></i>
                   <span>{{comment.commentReply}}条评论</span>
                 </span>
@@ -132,6 +145,7 @@
         canReadMore: false,
         fullContentEd: false,
         readMoreLoading: false,
+        yourcommentContent:'',
       }
     },
     mounted() {
@@ -176,9 +190,18 @@
       },
       comments(){
         return this.$store.state.commentreply.comments
+      },
+      userInfo() {
+        return this.$store.state.login.authUser
       }
     },
     methods: {
+      login() {
+        this.$store.dispatch('SHOWLONGINTYPE', 0)
+      },
+      comitcomment() {
+        this.$store.dispatch('comitcomment', {topicId: this.article.articleId, topicType: "article",commentContent:this.yourcommentContent})
+      },
       readMore() {
         this.readMoreLoading = true
         this.$nextTick(() => {
@@ -518,6 +541,45 @@
       padding: .8em;
       margin-bottom: 1em;
       background-color: $module-bg;
+      > .commentself{
+        > .title{
+          text-align: center;
+          font-weight: bold;
+        }
+        > .yourcomment{
+          padding: 1.3em 1.3em 1.3em 0em;
+          background-color: #f8f9fa;
+          border: 1px solid #f1f1f1;
+          border-radius: 4px;
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+          > div {
+            > .yourimg{
+              width: 10%;
+              float: left;
+              > img{
+                float: right;
+                margin-right: 1em;
+              }
+            }
+            > .el-textarea{
+              width: 90%;
+              float: left;
+              > textarea{
+                overflow: hidden;
+                word-wrap: break-word;
+                height: 69px;
+                resize:none;
+                outline: none;
+              }
+            }
+            & button{
+              margin-left: 59em;
+            }
+          }
+        }
+      }
       > ul {
         list-style-type: none;
         padding: 0em;
@@ -529,9 +591,10 @@
           padding-top: 1em;
           padding-bottom: 1em;
           border-top: 1px solid #f5f5f5;
-
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
           > div {
-              width: 100%;
               display: flex;
               > .user {
                 float: left;
@@ -549,6 +612,9 @@
                 height: 100%;
                 > div{
                   > span{
+                    &.hf{
+                      cursor: pointer;
+                    }
                     > i{
                       margin-right: .4em;
                     }
