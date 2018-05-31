@@ -17,7 +17,9 @@
     "highlight.js": "^9.12.0",
     "marked": "^0.3.12",
     "nuxt": "^1.0.0",
-    "element-ui": "^2.1.0"
+    "element-ui": "^2.1.0",
+    "markdown-it": "^8.4.0",
+    "top-editor": "^0.0.5"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

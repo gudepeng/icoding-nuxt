@@ -8,6 +8,10 @@
         <el-input type="textarea" v-model="article.articleSummary" placeholder="文章摘要"></el-input>
       </el-form-item>
       <el-form-item prop="articleContent">
+        <top-editor v-model="article.articleContent" :upload="upload" :options="options"></top-editor>
+      </el-form-item>
+      <!-- 自己写的编辑器 -->
+      <!--<el-form-item prop="articleContent">
             <el-row>
               <el-col :span="12" style="height: 600px">
                 <textarea style="width:100%;height:100%;resize: none;" v-model="article.articleContent"></textarea>
@@ -16,7 +20,7 @@
                 <div style="width:100%;height: 100%;word-break: break-all;background: #ddd" v-html="articleContentShow"></div>
               </el-col>
             </el-row>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="文章标签：" prop="articleTag">
         <el-tag
           :key="tag"
@@ -55,7 +59,8 @@
   </div>
 </template>
 <script>
-  import marked from '~/plugins/marked'
+  import TopEditor from 'top-editor/src/lib/TopEditor.vue'
+ /* import marked from '~/plugins/marked'*/
   export default {
     name: 'Publish',
     layout: 'mycenter',
@@ -98,9 +103,9 @@
       }
     },
     watch:{
-      'article.articleContent':function(newQuestion, oldQuestion){
+      /*'article.articleContent':function(newQuestion, oldQuestion){
         this.articleContentShow = marked(newQuestion, null, true)
-      }
+      }*/
     },
     computed: {
       articleType(){
@@ -108,6 +113,21 @@
       }
     },
     async mounted () {
+      if (process.browser) {
+        this.options = {
+          linkify: true,
+          highlight (str, lang) {
+            lang = lang || 'javascript'
+            if (require('highlight.js').getLanguage(lang)) {
+              try {
+                return require('highlight.js').highlight(lang, str).value
+              } catch (__) {
+              }
+            }
+            return ''
+          }
+        }
+      }
       // 有id就获取文章内容
       if (this.articleID) {
         await this.$store.dispatch('loadArticleDetail', {'article_id': this.articleID})
@@ -116,9 +136,9 @@
       }
     },
     methods: {
-      writeArticleContent(){
+      /*writeArticleContent(){
         this.articleContentShow = marked(this.article.articleContent, null, true)
-      },
+      },*/
       async publish () {
         let pd = true
         this.$refs['form'].validate((valid) => {
@@ -131,7 +151,6 @@
         if (!pd) {
           return
         }
-        debugger
         let art = JSON.parse(JSON.stringify(this.article))
         art.articleTag = art.articleTag.join(",")
         await this.$store.dispatch('PUBLISH_ARTICLE', art)
@@ -160,6 +179,7 @@
       //文章标签结束
     },
     components: {
+      TopEditor
     }
   }
 </script>

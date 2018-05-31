@@ -16,9 +16,7 @@ export const actions = {
   loadAdminInfo({commit}) {
     return Service.get('/user/me')
       .then(response => {
-        console.log(response.status + "     " + response.data + "     " + response.data.status)
         const success = !!response.status && response.data && Object.is(response.data.status, 0)
-        console.log("success:" + success + "      " + response.data)
         if (success) commit('login/SET_USER', response.data.result)
       }, err => {
       })

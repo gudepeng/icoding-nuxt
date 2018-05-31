@@ -6,7 +6,7 @@ marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
   tables: true,
-  breaks: false,
+  breaks: true,
   pedantic: false,
   sanitize: false,
   smartLists: true,
@@ -73,11 +73,11 @@ renderer.paragraph = paragraphParse
 
 export default (content, tags, parseHtml = false) => {
   // 所有非链接的关键字进行内链处理
-  if (tags && tags.length) {
+  /*if (tags && tags.length) {
     renderer.text = text => buildTagLink(text, tags)
   } else {
     renderer.text = text => text
-  }
+  }*/
 
   // 如果是解析评论，则不解析html内容
   marked.setOptions({ sanitize: !parseHtml })
@@ -86,7 +86,6 @@ export default (content, tags, parseHtml = false) => {
     return ''
   }
   content= content.replace(/\\n/g,'\n');
-  console.log("content:"+content)
   // 返回解析内容
   return marked(content, { renderer })
 }

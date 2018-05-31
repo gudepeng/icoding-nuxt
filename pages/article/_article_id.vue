@@ -331,7 +331,7 @@
         }
         p {
           line-height: 2.2em;
-          text-indent: 2em;
+          text-indent: inherit;
           margin-bottom: 1em;
           &.text-center {
             text-align: center;
