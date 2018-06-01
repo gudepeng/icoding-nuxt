@@ -57,7 +57,7 @@ export const state = () => {
         value: '4', label: '人工智能'
       },
       {
-        value: '5', label: '杂谈'
+        value: '5', label: '技术简介'
       }
     ],
     articleUpType: [{

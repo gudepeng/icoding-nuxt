@@ -131,7 +131,8 @@
       // 有id就获取文章内容
       if (this.articleID) {
         await this.$store.dispatch('loadArticleDetail', {'article_id': this.articleID})
-        let articleDetail = this.$store.state.article.detail.data
+        let articleDetail = JSON.parse(JSON.stringify(this.$store.state.article.detail.data))
+        articleDetail.articleTag = articleDetail.articleTag.split(',')
         this.article = articleDetail
       }
     },

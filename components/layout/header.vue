@@ -8,26 +8,30 @@
         <div class="navbar-menu">
           <div>
             <span @click="$router.push('/')" class="navbar-slogan">首页</span>
-            <span class="navbar-slogan">开源项目</span>
-            <span class="navbar-slogan">分享资源</span>
-            <span class="navbar-slogan">视频教程</span>
+            <span class="navbar-slogan" title="暂未开放">开源项目</span>
+            <span class="navbar-slogan" title="暂未开放">分享资源</span>
+            <span class="navbar-slogan" title="暂未开放">视频教程</span>
+            <span class="navbar-slogan">联系我们</span>
           </div>
         </div>
         <div class="navbar-longin">
-          <div v-show="userInfo==null">
+          <div v-if="userInfo==null">
             <span @click="writearticle" class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
             <span class="navbar-slogan" @click="login(0)">登录</span>
             <span class="navbar-slogan">&</span>
             <span class="navbar-slogan" @click="login(1)">注册</span>
           </div>
-          <div v-show="userInfo!=null">
+          <div v-if="userInfo!=null">
             <span @click="$router.push('/publish')" class="navbar-slogan">写文章</span>
             <span class="navbar-slogan">|</span>
             <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">
-                 <img @click="$router.push('/mycenter')" src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
-              </span>
+              <template v-if="userInfo.userImageUrl">
+                <img style="width: 36px;height: 36px" @click="$router.push('/mycenter')" :src="userInfo.userImageUrl"/>
+              </template>
+              <template v-else>
+                <img style="width: 36px;height: 36px" @click="$router.push('/mycenter')" src="https://gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg"/>
+              </template>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item  command="publish">写文章</el-dropdown-item>
                 <el-dropdown-item divided command="mycenter">我的主页</el-dropdown-item>

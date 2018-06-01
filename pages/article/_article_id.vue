@@ -2,6 +2,7 @@
   <div class="article" :class="{ mobile: mobileLayout }">
     <div class="detail">
       <h2 class="title">{{ article.articleTitle || '...' }}</h2>
+      <span class="sendtitle" @click="$router.push(`/publish/${article.articleId}`)" v-show="userInfo!=null&&userInfo.userId==article.userId">编辑</span>
       <transition name="module" mode="out-in">
         <empty-box class="article-empty-box" v-if="!fetching && !article.articleTitle">
           <slot>No Result Article.</slot>
@@ -236,7 +237,6 @@
       },
       showReply(commentid,index){
         this.$store.dispatch('showloadreply', {commentId: commentid, index: index})
-
       }
     }
   }
@@ -297,6 +297,13 @@
         text-align: center;
         margin: 1em 0 1.5em 0;
         font-weight: 700;
+      }
+      > .sendtitle {
+        position: absolute;
+        right: 5em;
+        top: 3em;
+        color: black;
+        cursor: pointer;
       }
       > .content {
         iframe {
