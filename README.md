@@ -1,4 +1,4 @@
-# blogyyz
+# icoding
 
 > Nuxt.js project
 
