@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/icoding-vue.iml" filepath="$PROJECT_DIR$/.idea/icoding-vue.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/icoding-nuxt.iml" filepath="$PROJECT_DIR$/.idea/icoding-nuxt.iml" />
     </modules>
   </component>
 </project>
